@@ -1,6 +1,5 @@
 <template>
-	<div v-if="val.belong === belong"
-	  :class="{'container-active': type == 'text' && index == i}"
+	<div :class="{'container-active': type == 'text' && index == val.index}"
 	  :style="{
 	    position: val.belong === 'page' ? 'absolute' : 'relative',
 	    left: val.belong === 'page' ? val.left / width * 100 + '%' : '0',
@@ -12,14 +11,14 @@
 	  }">
 
 	  <!-- 内容编辑区 -->
-	  <div :id="'text' + i"
+	  <div :id="'text' + val.index"
 	    class="text-edit-area"
 	    contenteditable="true"
 	    data-type="text"
-	    :data-index="i"
+	    :data-index="val.index"
 	    v-html="val.text"
 	    @mouseup.stop="syncFontParam"
-	    @blur="updateText(i)">
+	    @blur="updateText(val.index)">
 	  </div>
 
 	  <!-- 移动控件 -->
@@ -27,12 +26,12 @@
 	  　class="move-bar" 
 	    data-type="text"
 	    data-draggable="true"
-	    :data-index="i">
+	    :data-index="val.index">
 	  </div>
 
 	  <!-- 尺寸调节控件 -->
 	  <div data-type="text" 
-	    :data-index="i" 
+	    :data-index="val.index" 
 	    class="size-control"
 	    @mousedown="handleResize">
 	  </div>
@@ -42,7 +41,7 @@
 <script>
 	export default {
 		// 属性含义参照 widget-image.vue
-		props: ['val', 'i', 'height', 'width', 'type', 'index', 'belong'],
+		props: ['val', 'height', 'width', 'type', 'index'],
 		methods: {
 			// 调整大小
 			handleResize (e) {
@@ -60,7 +59,7 @@
         })
       },
 
-			// 文本元件编辑状态下，点中文本时同步字体参数
+			// 文本元件编辑状态下，点击文本时，同步字体参数
       syncFontParam (e) {
         var sele = document.getSelection();
         var bold = false;

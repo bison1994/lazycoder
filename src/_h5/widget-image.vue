@@ -1,8 +1,7 @@
 <template>
-	<img v-if="val.belong === belong"
-    data-type="image"
+  <img data-type="image"
     :data-draggable="val.belong === 'page'"
-    :data-index="i"
+    :data-index="val.index"
     :data-hover="!!val.hoverPic"
     :src="val.url"
     :width="val.width / width * 100 + '%'"
@@ -18,10 +17,8 @@
 	export default {
 		props: [
 			'val', 				// 图片对象
-			'i', 					// 图片对象在数组中的索引
 			'width', 			// 包含块的宽
-			'height', 		// 包含块的高
-			'belong'			// 从属于谁，要么属于页面，要么属于某个容器
+			'height'  		// 包含块的高
 		]
 	}
 </script>

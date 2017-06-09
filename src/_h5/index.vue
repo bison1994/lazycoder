@@ -49,32 +49,34 @@
                 <hover :height="height"></hover>
 
                 <!-- 图片 -->
-                <images v-for="(val, i) in image"
+                <pic v-for="(val, i) in image"
                   :key="i"
                   :val="val"
-                  :i="i"
                   :height="height" 
                   :width="750" 
                   :type="type" 
                   :index="index" 
                   :belong="'page'">
-                </images>
+                </pic>
 
                 <!-- 文本 -->
-                <texts v-for="(val, i) in text"
+                <txt v-for="(val, i) in text"
                   :key="i"
                   :val="val"
-                  :i="i"
                   :height="height" 
                   :width="750" 
                   :type="type" 
                   :index="index" 
                   :belong="'page'"
                   @resize="handleResize">
-                </texts>
+                </txt>
 
                 <!-- 容器 -->
-                <container :height="height" 
+                <container v-for="(val, i) in container"
+                  :key="i"
+                  :val="val"
+                  :i="i"
+                  :height="height" 
                   :type="type" 
                   :index="index" 
                   @resize="handleResize">
@@ -130,8 +132,8 @@
   import animation from './animation'
 
   import hover from './hover-pic'
-  import image from './widget-image'
-  import text from './widget-text'
+  import pic from './widget-image'
+  import txt from './widget-text'
   import container from './widget-container'
 
   export default {
@@ -144,8 +146,8 @@
       generator,            // 复制-生成代码
       animation,            // 动画面板
       hover,                // hover 图片
-      images: image,        // 图片元件
-      texts: text,          // 文本元件
+      pic,                // 图片元件
+      txt,                  // 文本元件
       container             // 容器元件
     },
     data () {
@@ -374,12 +376,17 @@
 
       // 文本
       text () {
-        return this.$store.state.h5.text
+        return this.$store.getters.text.filter(val => val.belong === 'page')
       },
 
       // 图片
       image () {
-        return this.$store.state.h5.image
+        return this.$store.getters.image.filter(val => val.belong === 'page')
+      },
+
+      // 容器
+      container () {
+        return this.$store.state.h5.container
       }
     }
   }

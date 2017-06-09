@@ -11,7 +11,7 @@ export default {
 				if (val == type && i == index) return;
 				// 排除容器中的元件
 				if ((val === 'image' || val === 'text') && item.belong !== 'page') return;
-				
+
 				guides.push({
 					width: item.width,
 					height: item.height,
@@ -27,6 +27,22 @@ export default {
 	// hover 图片
 	hoverPic: state => {
 		return state.image.filter(val => val.hoverPic)
+	},
+
+	// 图片
+	image: state => {
+		return state.image.map((val, i) => {
+			val.index = i;
+			return val;
+		})
+	},
+
+	// 文本
+	text: state => {
+		return state.text.map((val, i) => {
+			val.index = i;
+			return val;
+		})
 	},
 
 	// 容器名称

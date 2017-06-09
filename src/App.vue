@@ -64,6 +64,35 @@ export default {
     color: #ccc;
   }
 
+  .container-active {
+    outline: 1px solid var(--sub);
+  }
+  .container-active > .size-control,
+  .container-active > .move-bar {
+    display: block;
+  }
+  .size-control {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: -5px;
+    right: -5px;
+    border: 1px solid var(--sub);
+    cursor: nwse-resize;
+    display: none;
+    background-color: #fff;
+  }
+  .move-bar {
+    position: absolute;
+    width: calc(100% + 2px);
+    height: 6px;
+    cursor: move;
+    background-color: var(--sub);
+    left: -1px;
+    top: -6px;
+    display: none;
+  }
+
   * {
     margin: 0;
     padding: 0;

@@ -82,7 +82,8 @@ export default {
 	    href: '',                         // 超链接
 	    hoverPic: '',                     // hover 图片预览的 url（base64 或 线上路径）
 	    hoverSrc: '',                     // hover 图片实际的 url
-	    belong: 'page'										// 属于哪个容器
+	    belong: 'page',										// 属于哪个容器
+	    index: 0
 	  }
 
 		payload.forEach(function (val) {
@@ -114,7 +115,8 @@ export default {
       text: '',
       z: 0,
       href: '',
-      belong: 'page'								// 属于哪个容器
+      belong: 'page',								// 属于哪个容器
+      index: 0
 		});
 	},
 

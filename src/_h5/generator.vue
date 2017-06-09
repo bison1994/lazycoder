@@ -16,25 +16,27 @@
             }">
 
           <!-- 图片 -->
-          <template v-for="(val, i) in image">
+          <template v-for="val in image">
             <!-- 带超链接的图 -->
             <a v-if="val.href" 
               :href="val.href"
               :style="{
+                  display: 'block',
                   position: 'absolute',
+                  width: val.width / 7.5 + '%',
+                  height: val.height / height * 100 + '%',
                   left: val.left / 7.5 + '%',
                   top: val.top / height * 100 + '%',
-                  zIndex: val.z,
-                  width: val.width / 7.5 + '%'
+                  zIndex: val.z
                 }">
               <img :data-hover="!!val.hoverPic"
-                :src="val.url"
-                :width="val.width / 7.5 + '%'">
+                :src="val.src"
+                width="100%">
             </a>
             <!-- 不带超链接的图 -->
             <img v-else
               :data-hover="!!val.hoverPic"
-              :src="val.url"
+              :src="val.src"
               :width="val.width / 7.5 + '%'"
               :style="{
                 position: 'absolute',
@@ -45,7 +47,7 @@
           </template>
 
           <!-- 文本 -->
-          <div v-for="(val, i) in text"
+          <div v-for="val in text"
             v-html="val.text"
             :style="{
               position: 'absolute',
@@ -59,7 +61,7 @@
           </div>
 
           <!-- 容器 -->
-          <div v-for="(val, i) in container"
+          <div v-for="val in container"
             :data-name="val.name"
             :style="{
               position: 'absolute',
@@ -67,8 +69,44 @@
               height: val.height / height * 100 + '%',
               left: val.left / 7.5 + '%',
               top: val.top / height * 100 + '%',
-              zIndex: val.z
+              zIndex: val.z,
+              display: 'flex',
+              flexDirection: val.dir,
+              justifyContent: val.justify,
+              alignItems: val.align
             }">
+            <!-- 图片 -->
+            <template v-for="item in val.image">
+              <!-- 带超链接的图 -->
+              <a v-if="item.href" 
+                :href="item.href"
+                :style="{
+                  width: item.width / val.width * 100 + '%',
+                  height: item.height / val.height * 100 + '%',
+                }">
+                <img :data-hover="!!item.hoverPic"
+                  :src="item.src"
+                  width="100%"
+                  height="100%">
+              </a>
+              <!-- 不带超链接的图 -->
+              <img v-else
+                :data-hover="!!item.hoverPic"
+                :src="item.src"
+                :width="item.width / val.width * 100 + '%'"
+                :height="item.height / val.height * 100 + '%'">
+            </template>
+
+            <!-- 文本 -->
+            <div v-for="item in val.text"
+              v-html="item.text"
+              :style="{
+                width: item.width / val.width * 100 + '%',
+                height: item.height / val.height * 100 + '%',
+                lineHeight: item.lineHeight,
+                zIndex: item.z
+              }">
+            </div>
           </div>
         </div>
       </div>
@@ -94,20 +132,43 @@
     mounted () {
       document.addEventListener('keyup', (e) => {
         if (e.ctrlKey && e.keyCode === 67) {
+          this.getData();
           this.generate();
         }
       })
     },
     methods: {
-      generate () {
-        var page = this.$store.state.h5.page;
-        var title = page.title;
-        this.height = page.height;
+      getData () {
+        var image = this.$store.state.h5.image;
+        var text = this.$store.state.h5.text;
+
         this.hoverPic = this.$store.getters.hoverPic;
-        this.image = this.$store.state.h5.image;
-        this.text = this.$store.state.h5.text;
+        this.image = image.filter(val => val.belong === 'page');
+        this.text = text.filter(val => val.belong === 'page');
         this.container = this.$store.state.h5.container;
 
+        this.container.forEach(val => {
+          val.image = [];
+          val.text = [];
+
+          for (var i = 0; i < image.length; i++) {
+            if (image[i].belong === val.name) {
+              val.image.push(image[i])
+            }
+          }
+
+          for (var i = 0; i < text.length; i++) {
+            if (text[i].belong === val.name) {
+              val.text.push(text[i])
+            }
+          }
+        })
+
+      },
+      generate () {
+        var page = this.$store.state.h5.page;
+        this.height = page.height;
+        var title = page.title;
         var head = 
 `<!DOCTYPE html>
 <html>
@@ -149,7 +210,7 @@
     border: 0;
   }
 
-  [data-hover="true"]:hover {
+  [data-hover="true"]:active {
     opacity: 0;
   }
   .container {
@@ -163,10 +224,36 @@
     left: 0;
     position: absolute;
   }
+  font[size="1"] {
+    font-size: .85rem;
+  }
+
+  font[size="2"] {
+    font-size: 1rem;
+  }
+
+  font[size="3"] {
+    font-size: 1.14rem;
+  }
+
+  font[size="4"] {
+    font-size: 1.286rem;
+  }
+
+  font[size="5"] {
+    font-size: 1.71rem;
+  }
+
+  font[size="6"] {
+    font-size: 2rem;
+  }
+
+  font[size="7"] {
+    font-size: 2.29rem;
+  }
 </style>
 <body>
 `
-
         var foot = 
 `
 <script>
