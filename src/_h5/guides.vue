@@ -106,7 +106,7 @@ export default {
   }
   .verti {
     position: absolute;
-    width: .5px;
+    width: 1px;
     height: 1000%;
     top: -50px;
     background: #18ffff;

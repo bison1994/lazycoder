@@ -24,7 +24,6 @@
       </div>
 		</div>
 
-		<!-- 图片的交互 -->
 		<div class="panel-row" flex v-if="activeElement.hoverPic !== undefined">
       <div class="panel-label">hover 图片</div>
       <div class="cell">
@@ -37,7 +36,6 @@
 	      </div>
       </div>
 		</div>
-
 	</div>
 </template>
 
@@ -50,6 +48,7 @@
 	    }
 	  },
 	  methods: {
+	  	// 添加 hover 图片
 	  	addPic () {
 	  		$communicator.$emit('upload', 2)
 	  	}

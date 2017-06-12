@@ -1,6 +1,6 @@
 # lazycoder
 
-[have a try]()
+[have a try](https://bison1994.github.io/kidney/lazycoder/)
 
 ### 说明
 1、h5 端 psd 文件宽度限定只能是 750px，所有切出的图片保持原大小，lazycoder 会自动计算出一个百分比宽度<br>

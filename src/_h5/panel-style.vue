@@ -258,7 +258,9 @@
     methods: {
       execCommand (type) {
         var _this = this;
-        document.execCommand(type, false, _this[type])
+        document.execCommand(type, false, _this[type]);
+        // 重置色值
+        this.foreColor = '#333333'
       },
       execSingleCommand (type) {
         document.execCommand(type)

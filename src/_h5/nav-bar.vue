@@ -5,17 +5,17 @@
     
     <!-- 菜单栏 -->
     <ul>
-      <li @click="copy" title="Ctrl+C">
+      <li @click="copy" title="获取代码">
         <i class="material-icons">code</i>
       </li>
     </ul>
   
     <div class="side">
       <ul v-show="activeElement.type">
-        <li title="复制元件" @click="copyWidget" >
+        <li title="复制元件 Ctrl + C" @click="copyWidget">
           <i class="material-icons f18">note_add</i>
         </li>
-        <li title="删除元件" @click="dele">
+        <li title="删除元件 Delete" @click="dele">
           <i class="material-icons f20">delete_forever</i>
         </li>
       </ul>
@@ -25,10 +25,28 @@
 
 <script>
   export default {
+    mounted () {
+      // Ctrl + C 复制元件
+      document.addEventListener('keyup', (e) => {
+        e.stopPropagation();
+        if (e.ctrlKey && e.keyCode === 67) {
+          this.$store.commit('copy')
+        }
+      }, true);
+
+      // Delete 删除选中元件
+      document.addEventListener('keyup', (e) => {
+        e.stopPropagation();
+        if (e.keyCode === 46) {
+          this.$store.commit('delete')
+        }
+      }, true);
+
+    },
     methods: {
       // 生成并复制代码
       copy () {
-        this.$emit('copy');
+        $communicator.$emit('copy');
       },
 
       // 复制元件

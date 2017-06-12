@@ -119,7 +119,7 @@
     <toast ref="toast"></toast>
 
     <!-- 代码生成组件 -->
-    <generator ref="generator" @notify="notify"></generator>
+    <generator @notify="notify"></generator>
   </div>
 </template>
 <script>
@@ -171,14 +171,6 @@
       document.addEventListener('click', () => {
         document.removeEventListener('mousemove', this.handlemousemove, true);
         this.moving = false;
-      }, false);
-
-      // delete 键删除选中元素
-      document.addEventListener('keyup', (e) => {
-        e.stopPropagation();
-        if (e.keyCode === 46) {
-          this.$store.commit('delete')
-        }
       }, false);
 
       // 初始化选中元件（将页面作为初始选中元件）
