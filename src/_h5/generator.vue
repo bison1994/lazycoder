@@ -1,116 +1,119 @@
 <template>
   <div style="position: absolute;">
     <div style="display: none" id="generator">
-      <div class="container" :style="{ paddingTop: height / 750 * 100 + '%' }">
-        <div class="wrapper">
 
-          <!-- hover 图片 -->
-          <img v-for="val in hoverPic"
-            :src="val.hoverSrc"
-            :width="val.width / 7.5 + '%'"
-            :style="{
-              position: 'absolute',
-              left: val.left / 7.5 + '%',
-              top: val.top / height * 100 + '%',
-              zIndex: val.z
-            }">
+<div class="container" :style="{ paddingTop: height / 750 * 100 + '%' }">++  
+  <div class="wrapper">
 
-          <!-- 图片 -->
-          <template v-for="val in image">
-            <!-- 带超链接的图 -->
-            <a v-if="val.href" 
-              :href="'javascript:' + val.href + ';'"
-              :style="{
-                  display: 'block',
-                  position: 'absolute',
-                  width: val.width / 7.5 + '%',
-                  height: val.height / height * 100 + '%',
-                  left: val.left / 7.5 + '%',
-                  top: val.top / height * 100 + '%',
-                  zIndex: val.z
-                }">
-              <img :data-hover="!!val.hoverPic"
-                :src="val.src"
-                width="100%">
-            </a>
-            <!-- 不带超链接的图 -->
-            <img v-else
-              :data-hover="!!val.hoverPic"
-              :src="val.src"
-              :width="val.width / 7.5 + '%'"
-              :style="{
-                position: 'absolute',
-                left: val.left / 7.5 + '%',
-                top: val.top / height * 100 + '%',
-                zIndex: val.z
-              }">
-          </template>
+    +- hover 图片 -+
+    <template v-for="val in hoverPic">
+    <img :data-src="val.hoverSrc"
+      :width="val.width / 7.5 + '%'"
+      :style="{
+        position: 'absolute',
+        left: val.left / 7.5 + '%',
+        top: val.top / height * 100 + '%',
+        zIndex: val.z
+      }" />++
+    </template>
+    +- 图片 -+
+    <template v-for="val in image">
+    <!-- 带超链接的图 -->
+    <a v-if="val.href" 
+      :href="'javascript:' + val.href + ';'"
+      :style="{
+        display: 'block',
+        position: 'absolute',
+        width: val.width / 7.5 + '%',
+        height: val.height / height * 100 + '%',
+        left: val.left / 7.5 + '%',
+        top: val.top / height * 100 + '%',
+        zIndex: val.z
+      }">**
+      <img :data-hover="!!val.hoverPic"
+        :data-src="val.src"
+        width="100%">**
+    </a>
+    <!-- 不带超链接的图 -->
+    <img v-else
+      :data-hover="!!val.hoverPic"
+      :data-src="val.src"
+      :width="val.width / 7.5 + '%'"
+      :style="{
+        position: 'absolute',
+        left: val.left / 7.5 + '%',
+        top: val.top / height * 100 + '%',
+        zIndex: val.z
+      }">++
+    </template>
+    +- 文本 -+
+    <template v-for="val in text">
+    <div v-html="val.text"
+      :style="{
+        position: 'absolute',
+        width: val.width / 7.5 + '%',
+        height: val.height / height * 100 + '%',
+        left: val.left / 7.5 + '%',
+        top: val.top / height * 100 + '%',
+        lineHeight: val.lineHeight,
+        zIndex: val.z
+      }">
+    </div>++
+    </template>
+    +- 容器 -+
+    <template v-for="val in container">
+    <div :data-name="val.name"
+      :style="{
+        position: 'absolute',
+        width: val.width / 7.5 + '%',
+        height: val.height / height * 100 + '%',
+        left: val.left / 7.5 + '%',
+        top: val.top / height * 100 + '%',
+        zIndex: val.z,
+        display: 'flex',
+        flexDirection: val.dir,
+        justifyContent: val.justify,
+        alignItems: val.align
+      }">**
+      <!-- 图片 -->
+      <template v-for="item in val.image">
+      <!-- 带超链接的图 -->
+      <template v-if="item.href">
+      <a :href="item.href"
+        :style="{
+          width: item.width / val.width * 100 + '%',
+          height: item.height / val.height * 100 + '%',
+        }">++
+        <img :data-hover="!!item.hoverPic"
+          :data-src="item.src"
+          width="100%"
+          height="100%" />++
+      </a>++
+      </template>
+      <!-- 不带超链接的图 -->
+      <template v-else>
+      <img :data-hover="!!item.hoverPic"
+        :data-src="item.src"
+        :width="item.width / val.width * 100 + '%'"
+        :height="item.height / val.height * 100 + '%'" />++
+      </template>
+      </template>
 
-          <!-- 文本 -->
-          <div v-for="val in text"
-            v-html="val.text"
-            :style="{
-              position: 'absolute',
-              width: val.width / 7.5 + '%',
-              height: val.height / height * 100 + '%',
-              left: val.left / 7.5 + '%',
-              top: val.top / height * 100 + '%',
-              lineHeight: val.lineHeight,
-              zIndex: val.z
-            }">
-          </div>
+      <!-- 文本 -->
+      <div v-for="item in val.text"
+        v-html="item.text"
+        :style="{
+          width: item.width / val.width * 100 + '%',
+          height: item.height / val.height * 100 + '%',
+          lineHeight: item.lineHeight,
+          zIndex: item.z
+        }">
+      </div>**    </div>++
+    </template>
 
-          <!-- 容器 -->
-          <div v-for="val in container"
-            :data-name="val.name"
-            :style="{
-              position: 'absolute',
-              width: val.width / 7.5 + '%',
-              height: val.height / height * 100 + '%',
-              left: val.left / 7.5 + '%',
-              top: val.top / height * 100 + '%',
-              zIndex: val.z,
-              display: 'flex',
-              flexDirection: val.dir,
-              justifyContent: val.justify,
-              alignItems: val.align
-            }">
-            <!-- 图片 -->
-            <template v-for="item in val.image">
-              <!-- 带超链接的图 -->
-              <a v-if="item.href" 
-                :href="item.href"
-                :style="{
-                  width: item.width / val.width * 100 + '%',
-                  height: item.height / val.height * 100 + '%',
-                }">
-                <img :data-hover="!!item.hoverPic"
-                  :src="item.src"
-                  width="100%"
-                  height="100%">
-              </a>
-              <!-- 不带超链接的图 -->
-              <img v-else
-                :data-hover="!!item.hoverPic"
-                :src="item.src"
-                :width="item.width / val.width * 100 + '%'"
-                :height="item.height / val.height * 100 + '%'">
-            </template>
+</div>++</div>
 
-            <!-- 文本 -->
-            <div v-for="item in val.text"
-              v-html="item.text"
-              :style="{
-                width: item.width / val.width * 100 + '%',
-                height: item.height / val.height * 100 + '%',
-                lineHeight: item.lineHeight,
-                zIndex: item.z
-              }">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </div><!-- end of generator -->
 
     <!-- 选择生成哪些代码 -->
     <popbox ref="popbox" title="选择需要复制的代码" @confirm="output">
@@ -137,6 +140,7 @@
     <!-- 用于复制代码 -->
     <textarea type="text" id="copy" style="height: 0; width: 0"></textarea>
   </div>
+
 </template>
 
 <script>
@@ -202,6 +206,7 @@
   <title>${ title }</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 </head>
+
 <style>
   * {
     padding: 0;
@@ -270,6 +275,7 @@
     font-size: 2.29rem;
   }
 </style>
+
 <body>
 `
 : 
@@ -493,6 +499,7 @@
 
   })();
 \<\/script\>
+
 `
 : 
 '';
@@ -504,34 +511,96 @@
 
         var stats = this.contain.indexOf('stats') > -1 ? 
 `
+<!-- GrowingIO SDK -->
 <script>
-  // 统计代码
-
+  var _vds = _vds || [];
+  window._vds = _vds;
+  (function(){
+    _vds.push(['setAccountId', '88fa8d8d5e33b245']);
+    (function() {
+      var vds = document.createElement('script');
+      vds.type='text/javascript';
+      vds.async = true;
+      vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(vds, s);
+    })();
+  })();
+  // itouzi market code
+  (function(){
+    var params = location.search.slice(1).split("&");
+    function paramSplit(b){
+      var a = [];
+      for(var i=0;i<b.length;i++){
+        var c=b[i].split('=');
+        if (c[1] && (c[0] == 's_label' || c[0] == 'in_param' || c[0] == 'kw_id' || c[0] == 'u')) {
+          a.push(b[i]);
+        }
+      }
+      return (a.length != 0) ? ("&"+a.join("&")) : "";
+    }
+    (new Image()).src = "/newuser/union/flowStat?ref="+encodeURIComponent(document.referrer)+"&local="+encodeURIComponent(location.href)+paramSplit(params);
+  })();
 \<\/script\>
+
+<!-- m.itouzi.com baidu code -->
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f7ebd662ec86045e2ef33796e4b3a2c4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+  })();
+\<\/script\>
+
+<!-- google code -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-46797696-3', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+\<\/script\>
+
 `
 :
 '';
 
-        var tail = 
+        var tail = this.contain.indexOf('head') > -1 && this.contain.indexOf('body') > -1 ?
 `</body>
 </html>`
+:
+'';
 
         var output = head + bridge + body + stats + tail;
 
-        setTimeout(() => {
-          this.copy(output);
-        }, 0)
+        // 将代码复制到剪贴板
+        this.copy(output);
       },
 
       formatCode (str) {
-        var arr = str.split('>');
-        for (var i = 0, len = arr.length - 1; i < len; i++) {
-          arr[i] += '>\n';
-        }
+        // 为注释添加叹号
+        str = str.replace(/\+\-/g, '<!--');
+        str = str.replace(/\-\+/g, '-->');
 
-        return arr.join('')
+        // 将 ++ 替换为换行符
+        str = str.replace(/\+\+/g, '\n');
+
+        // 将 ** 替换为回车符
+        str = str.replace(/\*\*/g, '\r');
+
+        // 将 data-src 替换为 src
+        str = str.replace(/data\-src/g, 'src');
+        return str
       },
 
+      /**
+       * 复制代码到剪贴板
+       * 首先将模板字符串添加到 textarea 中
+       * 再执行 document.execCommand('copy') 方法
+       */
       copy (output) {
         this.$refs.popbox.show = false;
 
@@ -554,7 +623,10 @@
 
       output () {
         this.getData();
-        this.generate();
+
+        setTimeout(() => {
+          this.generate();
+        }, 0)
       }
     }
   }

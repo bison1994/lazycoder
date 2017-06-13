@@ -143,7 +143,7 @@
         <i class="material-icons">bookmark_border</i>
         <div class="panel-label">容器名称</div>
         <div>
-          <input type="text" v-model="activeElement.name" placeholder="起个名儿">
+          <input type="text" v-model.trim="activeElement.name" placeholder="起个名儿">
         </div>
       </div>
 
