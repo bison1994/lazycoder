@@ -149,6 +149,7 @@
     data () {
       return {
         height: 0,
+        title: '',
         hoverPic: [],
         image: [],
         text: [],
@@ -170,12 +171,16 @@
       getData () {
         var image = this.$store.state.h5.image;
         var text = this.$store.state.h5.text;
+        var page = this.$store.state.h5.page;
 
+        this.title = page.title;
+        this.height = page.height;
         this.hoverPic = this.$store.getters.hoverPic;
         this.image = image.filter(val => val.belong === 'page');
         this.text = text.filter(val => val.belong === 'page');
         this.container = this.$store.state.h5.container;
 
+        // 将属于容器的图片和文本数据添加到容器对象中
         this.container.forEach(val => {
           val.image = [];
           val.text = [];
@@ -195,9 +200,7 @@
       },
 
       generate () {
-        var page = this.$store.state.h5.page;
-        this.height = page.height;
-        var title = page.title;     
+        var title = this.title;
         var head = this.contain.indexOf('head') > -1 ? 
 `<!DOCTYPE html>
 <html>
