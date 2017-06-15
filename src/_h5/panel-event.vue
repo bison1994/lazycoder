@@ -28,11 +28,27 @@
       <div class="panel-label">hover 图片</div>
       <div class="cell">
       	<div class="preview"
-      		@click="addPic"
-      		:style="{
-	      		backgroundImage: 'url(' + activeElement.hoverPic + ')'
-	      	}">
+      		@click="addPic(2)"
+      		:style="{ backgroundImage: 'url(' + activeElement.hoverPic + ')' }">
 	      	<i class="material-icons" v-show="!activeElement.hoverPic">add</i>
+	      </div>
+      </div>
+		</div>
+
+		<hr>
+
+		<div class="panel-row" flex>
+			<i class="material-icons">history</i>
+			<div class="panel-label">活动结束时</div>
+		</div>
+
+		<div class="panel-row" flex v-if="activeElement.expirePic !== undefined">
+      <div class="panel-label">结束图片</div>
+      <div class="cell">
+      	<div class="preview"
+      		@click="addPic(3)"
+      		:style="{ backgroundImage: 'url(' + activeElement.expirePic + ')' }">
+	      	<i class="material-icons" v-show="!activeElement.expirePic">add</i>
 	      </div>
       </div>
 		</div>
@@ -49,8 +65,8 @@
 	  },
 	  methods: {
 	  	// 添加 hover 图片
-	  	addPic () {
-	  		$communicator.$emit('upload', 2)
+	  	addPic (type) {
+	  		$communicator.$emit('upload', type)
 	  	}
 	  }
 	}

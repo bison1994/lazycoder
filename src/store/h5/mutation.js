@@ -82,6 +82,8 @@ export default {
 	    href: '',                         // 超链接
 	    hoverPic: '',                     // hover 图片预览的 url（base64 或 线上路径）
 	    hoverSrc: '',                     // hover 图片实际的 url
+	    expirePic: '',										// 结束状态 图片预览的 url（base64 或 线上路径）
+	    expireSrc: '',										// 结束状态 图片实际的 url
 	    belong: 'page',										// 属于哪个容器
 	    index: 0
 	  }
@@ -95,6 +97,12 @@ export default {
 	addHoverPic (state, payload) {
 		state.activeElement.hoverPic = payload[0].url;
 		state.activeElement.hoverSrc = payload[0].src;
+	},
+
+	// 添加 结束状态 图片
+	addExpirePic (state, payload) {
+		state.activeElement.expirePic = payload[0].url;
+		state.activeElement.expireSrc = payload[0].src;
 	},
 
 	// 替换图片

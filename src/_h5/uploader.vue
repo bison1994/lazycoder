@@ -39,7 +39,7 @@
 
       /**
        * 处理添加图片操作
- 			 * uploadAction 0 - 添加 | 1 - 替换 | 2 - 添加 hover 图片
+ 			 * uploadAction 0 - 添加 | 1 - 替换 | 2 - 添加 hover 图片 | 3 - 添加 结束状态 图
        */
       handleUpload () {
         var files = this.uploader.files;
@@ -72,6 +72,11 @@
           // 添加/替换 hover 图片
           if (this.uploadAction === 2) {
             this.$store.commit('addHoverPic', payload)
+          }
+
+          // 添加/替换 结束状态 图片
+          if (this.uploadAction === 3) {
+            this.$store.commit('addExpirePic', payload)
           }
         })
       },

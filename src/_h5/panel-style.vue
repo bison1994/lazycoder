@@ -16,6 +16,14 @@
         <input type="text" v-model="activeElement.height">
       </div>
     </div>
+
+    <div class="panel-row" flex>
+      <i class="material-icons">access_time</i>
+      <div class="panel-label">截止日期</div>
+      <div>
+        <input type="date" v-model="activeElement.endTime">
+      </div>
+    </div>
   </div>
 
   <!-- 元件样式 -->
@@ -225,7 +233,6 @@
     <!-- 添加到容器 -->
     <div v-if="activeElement.type === 'image' || activeElement.type === 'text'">
       <hr>
-
       <div class="panel-row" flex>
         <i class="material-icons">bookmark_border</i>
         <div class="panel-label">所属容器</div>

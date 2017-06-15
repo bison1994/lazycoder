@@ -594,8 +594,6 @@
         // 将 ** 替换为回车符
         str = str.replace(/\*\*/g, '\r');
 
-        // 将 data-src 替换为 src
-        str = str.replace(/data\-src/g, 'src');
         return str
       },
 
