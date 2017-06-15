@@ -61,8 +61,8 @@
 </template>
 
 <script>
-	import pic from './widget-image'
-  import txt from './widget-text'
+	import pic from './image'
+  import txt from './text'
 
   export default {
     props: ['height', 'type', 'index', 'val', 'i'],

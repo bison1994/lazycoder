@@ -15,19 +15,20 @@
 
 <script>
 	export default {
-    props: ['top'],
 		data () {
 			return {
 				uploader: null,
         uploadAction: 0,    // 0 - 新增 | 1 - 替换 | 2 - 添加 hover 图片
+        top: 0
 			}
 		},
 		mounted () {
       this.uploader = document.getElementById('uploader');
 
       // 在全局通信中介上注册一个自定义事件
-      $communicator.$on('upload', (type) => {
-        this.triggerUploader(type)
+      $communicator.$on('upload', (type, top) => {
+        this.top = top || 0;
+        this.triggerUploader(type);
       })
 		},
 		methods: {

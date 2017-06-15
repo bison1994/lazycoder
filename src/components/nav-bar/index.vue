@@ -72,7 +72,7 @@
   .logo {
     width: 50px;
     height: 50px;
-    background: url(../assets/sleepycat.png) no-repeat center/100%;
+    background: url(../../assets/sleepycat.png) no-repeat center/100%;
   }
   .nav {
     height: 50px;

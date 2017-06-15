@@ -1,5 +1,5 @@
 <template>
-	<div class="panel-wrap">
+	<div class="panel-wrap" v-if="tab === 2">
 		<div class="panel-row" flex>
 			<i class="material-icons">touch_app</i>
 			<div class="panel-label">点击时</div>
@@ -57,12 +57,7 @@
 
 <script>
 	export default {
-		computed: {
-	    // 选中元素对象
-	    activeElement () {
-	      return this.$store.state.h5.activeElement
-	    }
-	  },
+		props: ['activeElement', 'tab'],
 	  methods: {
 	  	// 添加 hover 图片
 	  	addPic (type) {

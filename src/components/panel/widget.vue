@@ -1,10 +1,10 @@
 <template>
-	<div>1</div>
+	<div v-if="tab === 4">1</div>
 </template>
 
 <script>
 	export default {
-
+		props: ['activeElement', 'tab'],
 	}
 </script>
 

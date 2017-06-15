@@ -1,5 +1,5 @@
 <template>
-	<div class="panel-wrap">
+	<div class="panel-wrap" v-if="tab === 3">
 		<div class="panel-row" flex>
 			<i class="material-icons">bookmark_border</i>
 			<div class="panel-label">动画名称</div>
@@ -47,12 +47,7 @@
 
 <script>
 	export default {
-		computed: {
-	    // 选中元素对象
-	    activeElement () {
-	      return this.$store.state.h5.activeElement
-	    }
-	  }
+		props: ['activeElement', 'tab']
 	}
 </script>
 
