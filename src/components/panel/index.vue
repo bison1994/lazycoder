@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="control-panel">
     <ul class="tabs" flex>
       <li class="tab" :class="{active: activeTab === 1}" @click="activeTab = 1">样式</li>
       <li class="tab" :class="{active: activeTab === 2}" @click="activeTab = 2">交互</li>
@@ -45,6 +45,11 @@
 
 
 <style scoped>
+  .control-panel {
+    width: 360px;
+    height: 100%;
+    border-left: 1px solid #f5f5f5;
+  }
   .tabs {
     border-bottom: 1px solid #f5f5f5;
   }

@@ -13,6 +13,11 @@
         show: false
       }
     },
+    mounted () {
+      $communicator.$on('notify', (option) => {
+        this.notify(option.info, option.type)
+      })
+    },
     methods: {
       notify (info, type) {
         if (this.show) return;

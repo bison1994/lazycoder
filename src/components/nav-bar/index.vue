@@ -4,12 +4,13 @@
     <div class="logo"></div>
     
     <!-- 菜单栏 -->
-    <ul>
+    <ul flex class="middle">
       <li @click="copy" title="获取代码">
         <i class="material-icons">code</i>
       </li>
     </ul>
-  
+
+    <!-- 工具栏 -->
     <div class="side">
       <ul v-show="activeElement.type">
         <li title="复制元件 Ctrl + C" @click="copyWidget">
@@ -20,11 +21,18 @@
         </li>
       </ul>
     </div>
+
+    <!-- 代码生成组件 -->
+    <generator ref="generator"></generator>
   </div>
 </template>
 
 <script>
+  import generator from './generator'
   export default {
+    components: {
+      generator: generator         // 复制-生成代码
+    },
     mounted () {
       // Ctrl + C 复制元件
       document.addEventListener('keyup', (e) => {
@@ -41,12 +49,11 @@
           this.$store.commit('delete')
         }
       }, true);
-
     },
     methods: {
       // 生成并复制代码
       copy () {
-        $communicator.$emit('copy');
+        this.$refs.generator.showDialog()
       },
 
       // 复制元件
@@ -75,15 +82,21 @@
     background: url(../../assets/sleepycat.png) no-repeat center/100%;
   }
   .nav {
+    width: 100%;
     height: 50px;
-    justify-content: space-between;
+    flex-shrink: 0;
+    background-color: var(--main);
+    padding-left: 10px;
+  }
+  .middle {
+    flex-grow: 1;
+    justify-content: center;
   }
   .side {
     width: 360px;
     height: 50px;
   }
   li {
-    display: inline-block;
     width: 50px;
     height: 50px;
     text-align: center;

@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute;">
+  <div style="position: absolute; width: 0">
     <div style="display: none" id="generator">
 
 <div class="container" :style="{ paddingTop: height / 750 * 100 + '%' }">++  
@@ -120,7 +120,7 @@
     </div><!-- end of generator -->
 
     <!-- 选择生成哪些代码 -->
-    <popbox ref="popbox" title="选择需要复制的代码" @confirm="output">
+    <popbox ref="popbox" title="选择需要复制的代码" @confirm="generate">
       <div>
         <label>
           <input type="checkbox" name="which" value="head" v-model="contain">
@@ -148,9 +148,9 @@
 </template>
 
 <script>
-  import popbox from '../components/popbox'
-  import Stats from '../assets/stats.js'
-  import Bridge from '../assets/bridge.js'
+  import Stats from './stats.js'
+  import Bridge from './bridge.js'
+
   export default {
     data () {
       return {
@@ -165,16 +165,21 @@
         contain: ['head', 'bridge', 'body', 'stats']
       }
     },
-    components: {
-      popbox
-    },
-    mounted () {
-      // 注册一个全局事件，方便 nav-var 组件里的按钮调用
-      $communicator.$on('copy', () => {
-        this.$refs.popbox.show = true;
-      })
-    },
     methods: {
+      showDialog () {
+        this.$refs.popbox.show = true;
+      },
+
+      // 点击确定，生成代码
+      generate () {
+        this.getData();
+
+        setTimeout(() => {
+          this.joinData();
+        }, 0)
+      },
+
+      // 获取并处理源数据
       getData () {
         var image = this.$store.state.h5.image;
         var text = this.$store.state.h5.text;
@@ -207,7 +212,8 @@
         })
       },
 
-      generate () {
+      // 整合数据
+      joinData () {
         var title = this.title;
         var time = (new Date(this.endTime)).getTime();
         var head = this.contain.indexOf('head') > -1 ? 
@@ -338,9 +344,10 @@
         var output = head + bridge + body + js + stats + tail;
 
         // 将代码复制到剪贴板
-        this.copy(output);
+        this.copy2clipboard(output);
       },
 
+      // 代码格式化
       formatCode (str) {
         // 为注释添加叹号
         str = str.replace(/\+\-/g, '<!--');
@@ -360,7 +367,7 @@
        * 首先将模板字符串添加到 textarea 中
        * 再执行 document.execCommand('copy') 方法
        */
-      copy (output) {
+      copy2clipboard (output) {
         this.$refs.popbox.show = false;
 
         document.getElementById('copy').value = output;
@@ -368,7 +375,7 @@
 
         try {
           if (document.execCommand('copy')) {
-            this.$emit('notify', {
+            $communicator.$emit('notify', {
               info: 'Copied to clipboard !',
               type: true
             })
@@ -378,14 +385,6 @@
         } catch (e) {
           alert(e)
         }
-      },
-
-      output () {
-        this.getData();
-
-        setTimeout(() => {
-          this.generate();
-        }, 0)
       }
     }
   }
