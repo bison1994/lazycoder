@@ -32,7 +32,7 @@
       }
     },
 		methods: {
-			//添加图片
+			// 添加图片
       addImage () {
         $communicator.$emit('upload', 0, this.scrollTop)
       },
@@ -63,7 +63,7 @@
         });
       },
 
-      // 为确保添加的元件出现在可视区内，获取画布向上滚动距离作为元件初始 top 值
+      // 为确保添加的元件出现在可视区内，用画布向上滚动距离作为元件初始 top 值
       updateSrollTop () {
         this.scrollTop = document.getElementById('viewport').scrollTop / this.zoom * 100
       }

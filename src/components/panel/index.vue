@@ -21,6 +21,7 @@
   import event from './event'
   import animation from './animation'
   import widget from './widget'
+
   export default {
     components: {
       page: page,
@@ -42,7 +43,6 @@
     }
   }
 </script>
-
 
 <style scoped>
   .control-panel {

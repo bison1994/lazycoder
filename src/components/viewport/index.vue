@@ -12,28 +12,29 @@
       <!-- 同时具备以上三个属性的元件可由鼠标直接拖动 -->
       
       <!-- hover 图片 -->
-      <hover :height="height"></hover>
+      <hover v-for="(val, i) in image"
+        :key="i"
+        :val="val"
+        :height="height" 
+        :width="750">
+      </hover>
 
       <!-- 图片 -->
       <pic v-for="(val, i) in image"
         :key="i"
         :val="val"
         :height="height" 
-        :width="750" 
-        :type="type" 
-        :index="index" 
-        :belong="'page'">
+        :width="750">
       </pic>
 
       <!-- 文本 -->
       <txt v-for="(val, i) in text"
         :key="i"
         :val="val"
-        :height="height" 
-        :width="750" 
-        :type="type" 
-        :index="index" 
-        :belong="'page'"
+        :height="height"
+        :width="750"
+        :type="type"
+        :index="index"
         @resize="handleResize">
       </txt>
 
@@ -53,6 +54,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import hover from './hover-pic'
   import pic from './image'
@@ -90,21 +92,6 @@
       }, false);
     },
     methods: {
-      /**
-       * 用于所有与 mousemove 相关的操作
-       * @return dx - 鼠标横向移动距离 | dy - 鼠标纵向移动距离
-       */
-      handlemousemove (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var _this = this;
-        var dx = e.pageX - this.startX;
-        var dy = e.pageY - this.startY;
-
-        _this[this.moveType](dx, dy);
-      },
-
       // 选中元件与取消选中，触发事件：mousedown
       handleSelection (e) {
         var target = e.target;
@@ -146,6 +133,19 @@
             index: 0
           })
         }
+      },
+      
+      // 用于所有与 mousemove 相关的操作
+      handlemousemove (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var _this = this;
+        var dx = e.pageX - this.startX;
+        var dy = e.pageY - this.startY;
+
+        // 执行相应操作
+        _this[this.moveType](dx, dy);
       },
 
       // 移动元件

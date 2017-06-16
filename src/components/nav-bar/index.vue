@@ -97,6 +97,7 @@
     height: 50px;
   }
   li {
+    display: inline-block;
     width: 50px;
     height: 50px;
     text-align: center;

@@ -24,11 +24,6 @@ export default {
 		return guides
 	},
 
-	// hover 图片
-	hoverPic: state => {
-		return state.image.filter(val => val.hoverPic)
-	},
-
 	// 图片
 	image: state => {
 		return state.image.map((val, i) => {

@@ -6,9 +6,9 @@
     :src="val.url"
     :width="val.width / width * 100 + '%'"
     :style="{
-      position: val.belong === 'page' ? 'absolute' : 'static',
-      left: val.left / width * 100 + '%',
-      top:  val.top / height * 100 + '%',
+      position: 'absolute',
+      left: val.belong === 'page' ? val.left / width * 100 + '%' : '0',
+      top:  val.belong === 'page' ? val.top / height * 100 + '%' : '0',
       zIndex: val.z
     }">
 </template>

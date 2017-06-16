@@ -6,8 +6,9 @@
   <div class="wrapper">
 
     +- hover 图片 -+
-    <template v-for="val in hoverPic">
-    <img :data-src="val.hoverSrc"
+    <template v-for="val in image">
+    <img v-if="val.hoverSrc"
+      :data-src="val.hoverSrc"
       :width="val.width / 7.5 + '%'"
       :style="{
         position: 'absolute',
@@ -79,42 +80,74 @@
       }">**
       <!-- 图片 -->
       <template v-for="item in val.image">
-      <!-- 带超链接的图 -->
-      <template v-if="item.href">
-      <a :href="item.href"
-        :style="{
+      <div :style="{
           width: item.width / val.width * 100 + '%',
           height: item.height / val.height * 100 + '%',
-        }">++
+          position: 'relative'
+        }">**
+        <!-- hover 图片 -->
+        <template>
+        <img v-if="item.hoverSrc"
+          width="100%"
+          height="100%"
+          :data-src="item.hoverSrc"
+          :style="{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            zIndex: item.z
+          }" />++
+        </template>
+        <!-- 带超链接的图 -->
+        <template v-if="item.href">
+        <a :href="item.href"
+          style="{
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }"
+          :style="{
+            zIndex: item.z
+          }">++
+          <img :data-hover="!!item.hoverPic"
+            :data-src="item.src"
+            :data-expire="item.expireSrc"
+            width="100%"
+            height="100%" />++
+        </a>++
+        </template>
+        <!-- 不带超链接的图 -->
+        <template v-else>
         <img :data-hover="!!item.hoverPic"
           :data-src="item.src"
           :data-expire="item.expireSrc"
           width="100%"
-          height="100%" />++
-      </a>++
+          height="100%"
+          :style="{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            zIndex: item.z
+          }" />**
+        </template>
+      </div>++
       </template>
-      <!-- 不带超链接的图 -->
-      <template v-else>
-      <img :data-hover="!!item.hoverPic"
-        :data-src="item.src"
-        :data-expire="item.expireSrc"
-        :width="item.width / val.width * 100 + '%'"
-        :height="item.height / val.height * 100 + '%'" />++
-      </template>
-      </template>
-
       <!-- 文本 -->
-      <div v-for="item in val.text"
-        v-html="item.text"
+      <template v-for="item in val.text">
+      <div v-html="item.text"
         :style="{
           width: item.width / val.width * 100 + '%',
           height: item.height / val.height * 100 + '%',
           lineHeight: item.lineHeight,
           zIndex: item.z
         }">
-      </div>**    </div>++
-    </template>
-
+      </div>**
+      </template>
+    </div>++
+  </template>
 </div>++</div>
 
     </div><!-- end of generator -->
@@ -157,7 +190,6 @@
         height: 0,
         title: '',
         endTime: '',
-        hoverPic: [],
         image: [],
         text: [],
         container: [],
@@ -188,7 +220,6 @@
         this.title = page.title;
         this.height = page.height;
         this.endTime = page.endTime;
-        this.hoverPic = this.$store.getters.hoverPic;
         this.image = image.filter(val => val.belong === 'page');
         this.text = text.filter(val => val.belong === 'page');
         this.container = this.$store.state.h5.container;
