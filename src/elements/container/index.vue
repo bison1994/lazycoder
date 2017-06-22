@@ -69,9 +69,9 @@
 </template>
 
 <script>
-	import pic from './image'
-  import txt from './text'
-  import hover from './hover-pic'
+	import hover from '@/elements/hoverpic'
+  import pic from '@/elements/image'
+  import txt from '@/elements/text'
 
   export default {
     props: ['height', 'type', 'index', 'val', 'i'],
@@ -80,12 +80,14 @@
     	txt: txt,
       hover: hover
     },
+
     methods: {
       // 调整大小
       handleResize (e) {
         this.$emit('resize', e)
       }
     },
+    
     computed: {
       // 文本
       text () {

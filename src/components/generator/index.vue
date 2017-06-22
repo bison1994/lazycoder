@@ -147,7 +147,12 @@
       </div>**
       </template>
     </div>++
-  </template>
+    </template>
+    <template v-if="signup">
+    +- 注册组件 -+
+    <signup :data="signup" :height="height"></signup>
+    </template>
+
 </div>++</div>
 
     </div><!-- end of generator -->
@@ -177,12 +182,13 @@
     <!-- 用于复制代码 -->
     <textarea type="text" id="copy" style="height: 0; width: 0"></textarea>
   </div>
-
 </template>
 
 <script>
   import Stats from './stats.js'
   import Bridge from './bridge.js'
+  import Style from './style.js'
+  import signup from '@/elements/signup/generator.vue'
 
   export default {
     data () {
@@ -193,10 +199,15 @@
         image: [],
         text: [],
         container: [],
-        code: '',
+        signup: null,
         contain: ['head', 'bridge', 'body', 'stats']
       }
     },
+
+    components: {
+      signup: signup
+    },
+
     methods: {
       showDialog () {
         this.$refs.popbox.show = true;
@@ -216,10 +227,12 @@
         var image = this.$store.state.h5.image;
         var text = this.$store.state.h5.text;
         var page = this.$store.state.h5.page;
+        var signup = this.$store.state.h5.signup;
 
         this.title = page.title;
         this.height = page.height;
         this.endTime = page.endTime;
+
         this.image = image.filter(val => val.belong === 'page');
         this.text = text.filter(val => val.belong === 'page');
         this.container = this.$store.state.h5.container;
@@ -240,7 +253,15 @@
               val.text.push(text[i])
             }
           }
-        })
+        });
+
+        // 判断注册组件是否存在
+        if (signup.length > 0) {
+          this.signup = signup[0];
+
+          // 将按钮图片设置为组件对象的属性
+          this.signup.btn = image.filter(val => val.belong === 'signup')[0] || {};
+        }
       },
 
       // 整合数据
@@ -255,89 +276,32 @@
   <title>${ title }</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 </head>
-
-<style>
-  * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-  html,
-  body {
-    height: 100%;
-    font-size: 14px;
-  }
-  body {
-    -webkit-font-smoothing: antialiased;
-    text-size-adjust: 100%;
-  }
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-  a:active,
-  a:focus,
-  a:hover {
-    outline-width: 0;
-    background-color: transparent;
-  }
-  ul, 
-  ol {
-    list-style-type: none;
-  }
-  img {
-    border: 0;
-  }
-  [data-hover="true"]:active {
-    opacity: 0;
-  }
-  .container {
-    width: 100%;
-    position: relative;
-  }
-  .wrapper {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-  }
-  font[size="1"] {
-    font-size: .85rem;
-  }
-  font[size="2"] {
-    font-size: 1rem;
-  }
-  font[size="3"] {
-    font-size: 1.14rem;
-  }
-  font[size="4"] {
-    font-size: 1.286rem;
-  }
-  font[size="5"] {
-    font-size: 1.71rem;
-  }
-  font[size="6"] {
-    font-size: 2rem;
-  }
-  font[size="7"] {
-    font-size: 2.29rem;
-  }
-</style>
-
+`
++ Style +
+`
 <body>
 `
-: 
-'';
+: '';
 
         var bridge = this.contain.indexOf('bridge') > -1 ? Bridge : '';
 
-        var body = this.contain.indexOf('body') > -1 ? 
-          this.formatCode(document.getElementById('generator').innerHTML)
-          :
-          '';
+        var body = this.contain.indexOf('body') > -1  
+          ? this.formatCode(document.getElementById('generator').innerHTML)
+          : '';
 
-        var js = 
+        var signup = !this.signup 
+        ? ''
+        :
+`
+<script src="https://js1-itzcdn-com.alikunlun.com/static_res/js/third/jquery-1.9.1.js">\<\/script\>
+<script>window.itz = {};window.itz.wap={}\<\/script\>
+<script src="https://js1-itzcdn-com.alikunlun.com/static/wap/js/newreg.min.js">\<\/script\>
+<script>
+  new itz.wap.register({})
+\<\/script\>
+
+`
+        var js = signup +
 `
 <script>
   // 项目是否过期

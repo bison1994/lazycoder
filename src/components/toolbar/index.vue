@@ -12,7 +12,7 @@
       <i class="material-icons">inbox</i>
       <p class="menu-caption">容器</p>
     </li>
-    <li class="menu-item">
+    <li class="menu-item" @click="addSignup">
       <i class="material-icons">face</i>
       <p class="menu-caption">注册</p>
     </li>
@@ -26,22 +26,18 @@
 <script>
 	export default {
     props: ['zoom'],
-    data () {
-      return {
-        scrollTop: 0
-      }
-    },
+
 		methods: {
-			// 添加图片
+      // 添加图片
       addImage () {
-        $communicator.$emit('upload', 0, this.scrollTop)
+        $communicator.$emit('upload', (payload) => {
+          this.$store.commit('addImage', payload)
+        }, true)
       },
 
 			// 添加文本
       addText () {
-        this.$store.commit('addText', {
-          top: this.scrollTop
-        });
+        this.$store.commit('addText');
 
         // 设置选中
         this.$store.commit('select', {
@@ -52,9 +48,7 @@
 
       // 添加容器
       addContainer () {
-        this.$store.commit('addContainer', {
-          top: this.scrollTop
-        });
+        this.$store.commit('addContainer');
 
         // 设置选中
         this.$store.commit('select', {
@@ -63,9 +57,21 @@
         });
       },
 
+      // 添加注册组件
+      addSignup () {
+        this.$store.commit('addSignup');
+
+        // 设置选中
+        this.$store.commit('select', {
+          type: 'signup',
+          index: 0
+        });
+      },
+
       // 为确保添加的元件出现在可视区内，用画布向上滚动距离作为元件初始 top 值
       updateSrollTop () {
-        this.scrollTop = document.getElementById('viewport').scrollTop / this.zoom * 100
+        var top = document.getElementById('viewport').scrollTop / this.zoom * 100;
+        this.$store.commit('updateSrollTop', top)
       }
 		}
 	}

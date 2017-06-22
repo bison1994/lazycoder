@@ -28,7 +28,7 @@
       <div class="panel-label">hover 图片</div>
       <div class="cell">
       	<div class="preview"
-      		@click="addPic(2)"
+      		@click="addPic('addHoverPic')"
       		:style="{ backgroundImage: 'url(' + activeElement.hoverPic + ')' }">
 	      	<i class="material-icons" v-show="!activeElement.hoverPic">add</i>
 	      </div>
@@ -46,7 +46,7 @@
       <div class="panel-label">结束图片</div>
       <div class="cell">
       	<div class="preview"
-      		@click="addPic(3)"
+      		@click="addPic('addExpirePic')"
       		:style="{ backgroundImage: 'url(' + activeElement.expirePic + ')' }">
 	      	<i class="material-icons" v-show="!activeElement.expirePic">add</i>
 	      </div>
@@ -59,9 +59,15 @@
 	export default {
 		props: ['activeElement', 'tab'],
 	  methods: {
-	  	// 添加 hover 图片
+	  	/**
+	  	 * 添加/替换图片
+	  	 * 
+	  	 * @param type { String } 添加图片类型
+	  	 */
 	  	addPic (type) {
-	  		$communicator.$emit('upload', type)
+	  		$communicator.$emit('upload', (payload) => {
+	  			this.$store.commit(type, payload)
+	  		})
 	  	}
 	  }
 	}

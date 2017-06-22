@@ -1,17 +1,15 @@
 <template>
   <div class="control-panel">
     <ul class="tabs" flex>
-      <li class="tab" :class="{active: activeTab === 1}" @click="activeTab = 1">样式</li>
+      <li class="tab" :class="{active: activeTab === 1}" @click="activeTab = 1">参数</li>
       <li class="tab" :class="{active: activeTab === 2}" @click="activeTab = 2">交互</li>
       <li class="tab" :class="{active: activeTab === 3}" @click="activeTab = 3">动画</li>
-      <li class="tab" :class="{active: activeTab === 4}" @click="activeTab = 4">元件</li>
     </ul>
   
     <page :activeElement="activeElement" :tab="activeTab"></page>
     <appearance :activeElement="activeElement" :tab="activeTab"></appearance>
     <event :activeElement="activeElement" :tab="activeTab"></event>
     <animation :activeElement="activeElement" :tab="activeTab"></animation>
-    <widget :activeElement="activeElement" :tab="activeTab"></widget>
   </div>
 </template>
 
@@ -20,21 +18,21 @@
   import style from './style'
   import event from './event'
   import animation from './animation'
-  import widget from './widget'
 
   export default {
     components: {
       page: page,
       appearance: style,
       event: event,
-      animation: animation,
-      widget: widget
+      animation: animation
     },
+
     data () {
       return {
         activeTab: 1
       }
     },
+
     computed: {
       // 选中元素对象
       activeElement () {
@@ -54,7 +52,7 @@
     border-bottom: 1px solid #f5f5f5;
   }
   .tab {
-    width: 25%;
+    width: 33.33%;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -116,9 +114,13 @@
     height: 32px;
     border: 1px solid #ccc;
   }
-  hr {
+  .panel-wrap hr {
     margin: 20px 0;
     border: none;
     border-top: 1px solid #f5f5f5;
+  }
+  .panel-wrap select {
+    width: 100%;
+    height: 100%;
   }
 </style>

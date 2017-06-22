@@ -6,6 +6,11 @@ export default {
     }
   },
 
+  // 更新画布滚动距离
+  updateSrollTop (state, top) {
+    state.top = top;
+  },
+
   // 移动元件
   move (state, payload) {
     var target = state.activeElement;
@@ -84,12 +89,11 @@ export default {
       hoverSrc: '',                     // hover 图片实际的 url
       expirePic: '',                    // 结束状态 图片预览的 url（base64 或 线上路径）
       expireSrc: '',                    // 结束状态 图片实际的 url
-      belong: 'page',                    // 属于哪个容器
-      index: 0
+      belong: 'page'                    // 属于哪个容器
     }
 
     payload.forEach(function (val) {
-      state.image.push(Object.assign(val, base))
+      state.image.push(Object.assign({}, base, val))
     })
   },
 
@@ -112,19 +116,18 @@ export default {
   },
 
   // 添加文本
-  addText (state, payload) {
+  addText (state) {
     state.text.push({
       type: 'text',
       width: 650,
       height: 100,
       left: 50,
-      top: payload.top,
+      top: state.top,
+      z: 0,
       lineHeight: 1.6,
       text: '',
-      z: 0,
       href: '',
-      belong: 'page',
-      index: 0
+      belong: 'page'
     });
   },
 
@@ -137,14 +140,14 @@ export default {
   },
 
   // 添加容器
-  addContainer (state, payload) {
+  addContainer (state) {
     state.container.push({
       name: '',
       type: 'container',
       width: 650,
       height: 300,
       left: 50,
-      top: payload.top,
+      top: state.top,
       z: 0,
       dir: 'row',
       justify: 'flex-start',
@@ -152,9 +155,48 @@ export default {
     });
   },
 
+  // 添加注册组件
+  addSignup (state) {
+    if (state.signup.length >= 1) {
+      alert('注册组件只能添加一个');
+    } else {
+      state.signup.push({
+        type: 'signup',
+        width: 650,
+        height: 700,
+        left: 50,
+        top: 0,
+        z: 0,
+        phoneIcon: '',                        // 手机图标
+        phoneIconSrc: '',                     // 手机图标路径
+        passIcon: '',                         // 密码图标
+        passIconSrc: '',                      // 密码图标路径
+        graphIcon: '',                        // 图形验证码图标
+        graphIconSrc: '',                     // 图形验证码图标路径
+        valiIcon: '',                         // 短信验证码图标
+        valiIconSrc: '',                      // 短信验证码图标路径
+        inviteIcon: '',                       // 邀请图标
+        inviteIconSrc: '',                    // 邀请图标路径
+        bottom: 80,                           // 注册按钮位置
+        hideSignIn: false,
+        hideInvite: false,
+        toggleVali: true,
+        btn: {}
+      })
+    }
+  },
+
+  // 添加注册组件的图标
+  addSignIcon (state, payload) {
+    var sign = state.signup[0];
+    var name = payload.name;
+    sign[name] = payload.payload.url;
+    sign[name + 'Src'] = payload.payload.src;
+  },
+
   // 复制元件
   copy (state, payload) {
-    if (state.type) {
+    if (state.type === 'image' || state.type === 'text' || state.type === 'container') {
       var copy = Object.assign({}, state.activeElement);
 
       // 由于容器的名称必须是唯一的，故复制容器需作处理

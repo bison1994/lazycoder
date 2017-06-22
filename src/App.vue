@@ -36,10 +36,10 @@
 </template>
 
 <script>
-  import navbar from './components/nav-bar'
-  import toolbar from './components/tool-menu'
-  import panel from './components/panel'
-  import viewport from './components/viewport'
+  import navbar from './components/Navbar'
+  import toolbar from './components/Toolbar'
+  import panel from './components/Panel'
+  import viewport from './components/Viewport'
 
   export default {
     components: {

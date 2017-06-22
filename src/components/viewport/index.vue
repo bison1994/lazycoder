@@ -12,7 +12,8 @@
       <!-- 同时具备以上三个属性的元件可由鼠标直接拖动 -->
       
       <!-- hover 图片 -->
-      <hover v-for="(val, i) in image"
+      <hover 
+        v-for="(val, i) in image"
         :key="i"
         :val="val"
         :height="height" 
@@ -20,7 +21,8 @@
       </hover>
 
       <!-- 图片 -->
-      <pic v-for="(val, i) in image"
+      <pic 
+        v-for="(val, i) in image"
         :key="i"
         :val="val"
         :height="height" 
@@ -28,7 +30,8 @@
       </pic>
 
       <!-- 文本 -->
-      <txt v-for="(val, i) in text"
+      <txt 
+        v-for="(val, i) in text"
         :key="i"
         :val="val"
         :height="height"
@@ -39,7 +42,8 @@
       </txt>
 
       <!-- 容器 -->
-      <container v-for="(val, i) in container"
+      <container 
+        v-for="(val, i) in container"
         :key="i"
         :val="val"
         :i="i"
@@ -49,6 +53,14 @@
         @resize="handleResize">
       </container>
 
+      <!-- 注册组件 -->
+      <signup 
+        :height="height" 
+        :type="type"
+        :index="index"
+        @resize="handleResize">
+      </signup>
+
       <!-- 参考线 -->
       <guides :moving="moving"></guides>
     </div>
@@ -56,31 +68,36 @@
 </template>
 
 <script>
-  import hover from './hover-pic'
-  import pic from './image'
-  import txt from './text'
-  import container from './container'
+  import hover from '@/elements/hoverpic'
+  import pic from '@/elements/image'
+  import txt from '@/elements/text'
+  import container from '@/elements/container'
+  import signup from '@/elements/signup'
   import guides from './guides'
 
   export default {
     components: {
-      hover: hover,              // hover 图片
-      pic: pic,                  // 图片元件
-      txt: txt,                  // 文本元件
-      container: container,      // 容器元件
-      guides: guides             // 参考线
+      hover: hover,               // hover 图片
+      pic: pic,                   // 图片元件
+      txt: txt,                   // 文本元件
+      container: container,       // 容器元件
+      signup: signup,             // 注册组件
+      guides: guides              // 参考线
     },
+
     props: ['zoom'],
+
     data () {
       return {
-        originX: 0,              // 选中元件的横向初始值
-        originY: 0,              // 选中元件的纵向初始值
-        startX: 0,               // 鼠标摁下时的横坐标
-        startY: 0,               // 鼠标摁下时的纵坐标
-        moving: false,           // 是否正在移动元件（参考线仅在移动元件时显示）
-        moveType: 'move'         // move - 移动元件 | resize - 调节尺寸
+        originX: 0,               // 选中元件的横向初始值
+        originY: 0,               // 选中元件的纵向初始值
+        startX: 0,                // 鼠标摁下时的横坐标
+        startY: 0,                // 鼠标摁下时的纵坐标
+        moving: false,            // 是否正在移动元件（参考线仅在移动元件时显示）
+        moveType: 'move'          // move - 移动元件 | resize - 调节尺寸
       }
     },
+
     mounted () {
       // 处理选中、移动元件的操作
       // 注册在捕获阶段，尽早执行元件选中操作
@@ -91,6 +108,7 @@
         this.moving = false;
       }, false);
     },
+
     methods: {
       // 选中元件与取消选中，触发事件：mousedown
       handleSelection (e) {
@@ -188,10 +206,13 @@
       // 替换图片
       replaceImage () {
         if (this.type === 'image') {
-          $communicator.$emit('upload', 1)
+          $communicator.$emit('upload', (payload) => {
+            this.$store.commit('replaceImage', payload)
+          })
         }
       }
     },
+
     computed: {
       // 画布高度
       height () {

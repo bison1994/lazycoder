@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import generator from './generator'
+  import generator from '@/components/generator'
   export default {
     components: {
       generator: generator         // 复制-生成代码
