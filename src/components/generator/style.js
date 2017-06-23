@@ -126,25 +126,28 @@ export default
   .sign-up-btn:active {
     opacity: 1;
   }
-
+  
   .sign-up-icon--close,
   .sign-up-icon--eye {
     display: block;
-    width: 100%;
     height: 100%;
     background: no-repeat center/14px;
     position: absolute;
     top: 0;
-    left: 0;
   }
   .sign-up-icon--close {
-     background-image: url("https://www.itouzi.com/static/wap/img/newreg/clear.png");
+    width: 2rem;
+    right: 0;
+    display: none;
+    background-image: url("https://www.itouzi.com/static/wap/img/newreg/clear.png");
   }
   .sign-up-icon--eye {
-     background-image: url("https://www.itouzi.com/static/wap/img/newreg/eye_n.png");
+    width: 100%;
+    left: 0;
+    background-image: url("https://www.itouzi.com/static/wap/img/newreg/eye_n.png");
   }
   .sign-up-icon--eye.enable {
-     background-image: url("https://www.itouzi.com/static/wap/img/newreg/eye_y.png");
+    background-image: url("https://www.itouzi.com/static/wap/img/newreg/eye_y.png");
   }
   .vcode-wrapper {
     display: block;

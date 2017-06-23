@@ -15,13 +15,11 @@
       <div class="sign-up--l" :style="{backgroundImage: 'url(' + data.phoneIconSrc + ')'}"></div>**
       
       <div class="sign-up--m">**
-        <input maxlength="11" type="tel" name="phone" placeholder="请输入手机号" required>**
+        <input maxlength="11" type="tel" class="phone" name="phone" placeholder="请输入手机号" required>**
+
+        <i class="sign-up-icon--close icon-clear"></i>**
 
         <div class="sign-up-error error-phone" style="display: none;"></div>**
-      </div>**
-
-      <div class="sign-up--r">**
-        <i class="sign-up-icon--close icon-clear"></i>**
       </div>**
     </div>**
 
@@ -30,12 +28,12 @@
       <div class="sign-up--l" :style="{backgroundImage: 'url(' + data.passIconSrc + ')'}"></div>**
       
       <div class="sign-up--m">**
-        <input type="password" name="password" placeholder="请设置登录密码" required>**
+        <input type="password" class="password" name="password" placeholder="请设置登录密码" required>**
 
         <div class="sign-up-error error-password" style="display: none;"></div>**
       </div>**
 
-      <div id="viewPwd1" class="sign-up--r is-hidden">**
+      <div id="viewPwd1" class="sign-up--r">**
         <i class="sign-up-icon--eye icon-eye"></i>**
       </div>**
     </div>**
@@ -45,7 +43,7 @@
       <div class="sign-up--l" :style="{backgroundImage: 'url(' + data.graphIconSrc + ')'}"></div>**
 
       <div class="sign-up--m">**
-        <input type="text" name="valicode" placeholder="请输入图形验证码" required>**
+        <input type="text" class="valicode" name="valicode" placeholder="请输入图形验证码" required>**
 
         <div class="sign-up-error error-valicode" style="display: none;"></div>**
       </div>**
@@ -58,7 +56,7 @@
       <div class="sign-up--l" :style="{backgroundImage: 'url(' + data.valiIconSrc + ')'}"></div>**
       
       <div class="sign-up--m">**
-        <input type="text" name="phoneValicode" placeholder="请输入验证码" required>**
+        <input type="text" class="phone-valicode" name="phoneValicode" placeholder="请输入验证码" required>**
 
         <div class="sign-up-error error-phoneValicode" style="display: none;"></div>**
       </div>**
@@ -73,7 +71,7 @@
       <div class="sign-up--l" :style="{backgroundImage: 'url(' + data.inviteIconSrc + ')'}"></div>**
 
       <div class="sign-up--m">**
-        <input type="text" name="invitee" placeholder="请填写邀请人的手机号（选填）">**
+        <input type="text" class="invitee" name="invitee" placeholder="请填写邀请人的手机号（选填）">**
 
         <div class="sign-up-error error-phoneValicode" style="display: none;"></div>**
       </div>**
@@ -82,7 +80,7 @@
     </div>**
 
     <!-- 提交按钮 -->
-    <div class="sign-up-submit" :style="{bottom: data.bottom / data.height * 100 + '%'}">**
+    <div class="sign-up-submit reg-btn" :style="{bottom: data.bottom / data.height * 100 + '%'}">**
       <!-- hover 图片 -->
       <img 
         v-if="data.btn.hoverSrc"
