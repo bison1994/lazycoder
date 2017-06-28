@@ -1,12 +1,16 @@
 <template>
 	<ul class="menu-bar" @mousedown="updateSrollTop">
-    <li class="menu-item" @click="addImage">
+    <li class="menu-item" @click="addBackImage">
       <i class="material-icons">wallpaper</i>
-      <p class="menu-caption">图片</p>
+      <p class="menu-caption">背景图</p>
     </li>
     <li class="menu-item" @click="addText">
       <i class="material-icons">translate</i>
       <p class="menu-caption">文本</p>
+    </li>
+    <li class="menu-item" @click="addImage">
+      <i class="material-icons">crop_original</i>
+      <p class="menu-caption">图片</p>
     </li>
     <li class="menu-item" @click="addContainer">
       <i class="material-icons">inbox</i>
@@ -20,6 +24,10 @@
       <i class="material-icons">share</i>
       <p class="menu-caption">分享</p>
     </li>
+    <li class="menu-item">
+      <i class="material-icons">schedule</i>
+      <p class="menu-caption">进度条</p>
+    </li>
   </ul>
 </template>
 
@@ -28,6 +36,13 @@
     props: ['zoom'],
 
 		methods: {
+      // 添加背景图
+      addBackImage () {
+        $communicator.$emit('upload', (payload) => {
+          this.$store.commit('addBackImage', payload)
+        }, true)
+      },
+
       // 添加图片
       addImage () {
         $communicator.$emit('upload', (payload) => {
@@ -59,6 +74,14 @@
 
       // 添加注册组件
       addSignup () {
+        if (this.$store.state.h5.signup) {
+          $communicator.$emit('notify', {
+            info: '注册组件只能加一个',
+            type: false
+          })
+          return
+        }
+        
         this.$store.commit('addSignup');
 
         // 设置选中
@@ -83,7 +106,7 @@
     height: 100%;
     border-right: 1px solid #eee;
     color: #555;
-    padding-top: 20px;
+    padding-top: 10px;
   }
   .menu-item {
     display: inline-block;

@@ -80,7 +80,8 @@
     </div>**
 
     <!-- 提交按钮 -->
-    <div class="sign-up-submit reg-btn" :style="{bottom: data.bottom / data.height * 100 + '%'}">**
+    <div class="sign-up-submit reg-btn" 
+      :style="{ bottom: data.bottom / data.height * 100 + '%' }">**
       <!-- hover 图片 -->
       <img 
         v-if="data.btn.hoverSrc"

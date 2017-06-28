@@ -15,7 +15,7 @@
       <div class="panel-label">宽度</div>
       <div class="panel-value">{{ activeElement.width }}</div>
       <div class="panel-slider-wrap">
-        <slider v-model="activeElement.width" :max="750" />
+        <slider v-model="activeElement.width" :step="1" :max="750" />
       </div>
     </div>
 
@@ -24,7 +24,7 @@
       <div class="panel-label">高度</div>
       <div class="panel-value">{{ activeElement.height }}</div>
       <div class="panel-slider-wrap">
-        <slider v-model="activeElement.height" :max="height" />
+        <slider v-model="activeElement.height" :step="1" :max="height" />
       </div>
     </div>
 
@@ -59,7 +59,7 @@
     <div v-if="activeElement.type === 'image' || activeElement.type === 'text'">
       <hr>
       <div class="panel-row" flex>
-        <i class="material-icons">bookmark_border</i>
+        <i class="material-icons">move_to_inbox</i>
         <div class="panel-label">所属容器</div>
         <div class="panel-value">
           <select v-model="activeElement.belong">
@@ -73,9 +73,9 @@
 </template>
 
 <script>
-  import txt from '@/elements/text/style.vue'
-  import contain from '@/elements/container/style.vue'
-  import signup from '@/elements/signup/style.vue'
+  import txt from '@/components/elements/txt/style.vue'
+  import contain from '@/components/elements/container/style.vue'
+  import signup from '@/components/elements/signup/style.vue'
 
 	export default {
     components: {

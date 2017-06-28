@@ -47,6 +47,41 @@
         </select>
       </div>
     </div>
+
+    <hr>
+    <div class="panel-row" flex>
+      <i class="material-icons">invert_colors</i>
+      <div class="panel-label">背景色</div>
+      <div class="panel-value">{{ activeElement.bgColor }}</div>
+      <div>
+        <input type="color" v-model="activeElement.bgColor">
+      </div>
+    </div>
+
+    <div class="panel-row" flex>
+      <i class="material-icons">crop_square</i>
+      <div class="panel-label">圆角</div>
+      <div>
+        <input type="text" v-model="activeElement.radius">
+      </div>
+    </div>
+
+    <div class="panel-row" flex>
+      <i class="material-icons">border_outer</i>
+      <div class="panel-label">边的宽度</div>
+      <div>
+        <input type="text" v-model="activeElement.borderWidth">
+      </div>
+    </div>
+
+    <div class="panel-row" flex>
+      <i class="material-icons">border_color</i>
+      <div class="panel-label">边的颜色</div>
+      <div class="panel-value">{{ activeElement.borderColor }}</div>
+      <div>
+        <input type="color" v-model="activeElement.borderColor">
+      </div>
+    </div>
   </div>
 </template>
 

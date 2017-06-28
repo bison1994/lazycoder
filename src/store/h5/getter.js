@@ -24,6 +24,14 @@ export default {
 		return guides
 	},
 
+	// 背景图片
+	bgImage: state => {
+		return state.bgImage.map((val, i) => {
+			val.index = i;
+			return val;
+		})
+	},
+
 	// 图片
 	image: state => {
 		return state.image.map((val, i) => {

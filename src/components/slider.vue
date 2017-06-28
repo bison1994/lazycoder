@@ -1,15 +1,20 @@
+<!-- based on muse-ui -->
+<!-- http://www.muse-ui.org/#/slider -->
 <template>
-<div class="mu-slider" :class="sliderClass"
-  @focus="handleFocus" 
-  @blur="handleBlur"  
-  @mousedown="handleMouseDown"
-  @mouseup="handleMouseUp">
-  <input type="hidden" :value="inputValue">
-  <div class="mu-slider-track"></div>
-  <div class="mu-slider-fill" :style="fillStyle"></div>
-  <div class="mu-slider-thumb" :style="thumbStyle">
+  <div :class="{'mu-lisder-wrapper': tuning}">
+    <div class="mu-slider" :class="sliderClass"
+      @focus="handleFocus" 
+      @blur="handleBlur"  
+      @mousedown="handleMouseDown"
+      @mouseup="handleMouseUp">
+      <input type="hidden" :value="inputValue">
+      <div class="mu-slider-track"></div>
+      <div class="mu-slider-fill" :style="fillStyle"></div>
+      <div class="mu-slider-thumb" :style="thumbStyle"></div>
+    </div>
+    <div v-if="tuning" class="mu-increment" @mousedown.stop="increase">+</div>
+    <div v-if="tuning" class="mu-decrement" @mousedown.stop="decrease">-</div>
   </div>
-</div>
 </template>
 
 <script>
@@ -30,8 +35,13 @@ export default {
     step: {
       type: Number,
       default: 0.1
+    },
+    tuning: {
+      type: Boolean,
+      default: true
     }
   },
+
   data () {
     return {
       inputValue: this.value,
@@ -40,6 +50,7 @@ export default {
       dragging: false
     }
   },
+
   computed: {
     percent () {
       let percentNum = (this.inputValue - this.min) / (this.max - this.min) * 100
@@ -62,10 +73,12 @@ export default {
       }
     }
   },
+
   created () {
     this.handleDragMouseMove = this.handleDragMouseMove.bind(this)
     this.handleMouseEnd = this.handleMouseEnd.bind(this)
   },
+
   methods: {
     handleMouseDown (e) {
       this.setValue(e)
@@ -75,15 +88,19 @@ export default {
       this.$el.focus()
       this.onDragStart(e)
     },
+
     handleMouseUp () {
       this.active = false
     },
+
     handleFocus () {
       this.focused = true
     },
+
     handleBlur () {
       this.focused = false
     },
+
     // 从点击位置更新 value
     setValue (e) {
       const { $el, max, min, step } = this
@@ -97,13 +114,14 @@ export default {
         value = min
       }
       this.inputValue = value
-      // this.$emit('change', value)
     },
+
     // 拖拽控制
     onDragStart (e) {
       this.dragging = true
       this.active = true
     },
+
     onDragUpdate (e) {
       if (this.dragRunning) return
       this.dragRunning = true
@@ -112,19 +130,33 @@ export default {
         if (!this.disabled) this.setValue(e)
       })
     },
+
     onDragStop (e) {
       this.dragging = false
       this.active = false
     },
+
     handleDragMouseMove (e) {
       this.onDragUpdate(e)
     },
+
     handleMouseEnd (e) {
       document.removeEventListener('mousemove', this.handleDragMouseMove)
       document.removeEventListener('mouseup', this.handleMouseEnd)
       this.onDragStop(e)
+    },
+
+    increase () {
+      if (this.inputValue >= this.max) return;
+      this.inputValue += this.step;
+    },
+
+    decrease () {
+      if (this.inputValue <= this.min) return;
+      this.inputValue -= this.step;
     }
   },
+  
   watch: {
     value (val) {
       this.inputValue = val
@@ -137,15 +169,17 @@ export default {
 </script>
 
 <style>
+.mu-lisder-wrapper {
+  width: 100%;
+  height: 24px;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 30px;
+}
 .mu-slider {
   width: 100%;
   position: relative;
   height: 24px;
-  display: flex;
-  align-items: center;
-  cursor: default;
-  user-select: none;
-  outline: none;
 }
 .mu-slider-track {
   position: absolute;
@@ -154,13 +188,13 @@ export default {
   right: 0;
   top: 50%;
   margin-top: -1px;
-  background-color: rgba(189, 192, 186, .4);
+  background-color: #e5e5e5;
 }
 .mu-slider-fill {
   position: absolute;
   height: 2px;
   width: 100%;
-  background-color: #B47157;
+  background-color: var(--main);
   left: 0;
   top: 50%;
   margin-top: -1px;
@@ -170,7 +204,7 @@ export default {
   top: 50%;
   width: 12px;
   height: 12px;
-  background-color: #B47157;
+  background-color: var(--main);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width .3s, height .3s;
@@ -180,7 +214,18 @@ export default {
   width: 18px;
   height: 18px;
 }
-.mu-slider.zero .mu-slider-thumb {
-  background-color: #BDC0BA;
+.mu-increment,
+.mu-decrement {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: -7px;
+  cursor: pointer;
+}
+.mu-increment {
+  right: 0;
+}
+.mu-decrement {
+  left: 0;
 }
 </style>

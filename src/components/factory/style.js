@@ -26,6 +26,7 @@ export default
   body {
     -webkit-font-smoothing: antialiased;
     text-size-adjust: 100%;
+    font-size: 0;
   }
   a {
     color: inherit;

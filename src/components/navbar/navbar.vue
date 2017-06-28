@@ -5,14 +5,14 @@
     
     <!-- 菜单栏 -->
     <ul flex class="middle">
-      <li @click="copy" title="获取代码">
+      <li @click="copy">
         <i class="material-icons">code</i>
       </li>
     </ul>
 
     <!-- 工具栏 -->
     <div class="side">
-      <ul v-show="activeElement.type">
+      <ul v-show="show">
         <li title="复制元件 Ctrl + C" @click="copyWidget">
           <i class="material-icons f18">note_add</i>
         </li>
@@ -23,15 +23,15 @@
     </div>
 
     <!-- 代码生成组件 -->
-    <generator ref="generator"></generator>
+    <factory ref="factory"></factory>
   </div>
 </template>
 
 <script>
-  import generator from '@/components/generator'
+  import factory from '@/components/factory'
   export default {
     components: {
-      generator: generator         // 复制-生成代码
+      factory: factory         // 生成代码组件
     },
     mounted () {
       // Ctrl + C 复制元件
@@ -50,10 +50,11 @@
         }
       }, true);
     },
+
     methods: {
       // 生成并复制代码
       copy () {
-        this.$refs.generator.showDialog()
+        this.$refs.factory.showDialog()
       },
 
       // 复制元件
@@ -66,10 +67,10 @@
         this.$store.commit('delete')
       }
     },
+    
     computed: {
-      // 选中元素对象
-      activeElement () {
-        return this.$store.state.h5.activeElement
+      show () {
+        return this.$store.state.h5.type !== 'page'
       }
     }
   }
@@ -93,14 +94,13 @@
     justify-content: center;
   }
   .side {
-    width: 360px;
+    width: 400px;
     height: 50px;
   }
   li {
     display: inline-block;
     width: 50px;
     height: 50px;
-    text-align: center;
     cursor: pointer;
     line-height: 50px;
   }

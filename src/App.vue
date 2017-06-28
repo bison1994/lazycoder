@@ -1,30 +1,27 @@
 <template>
   <div class="app">
-    <!-- 整体布局 -->
-    <div flex class="container">
-      <!-- 顶栏 -->
-      <navbar></navbar>
+    <!-- 顶栏 -->
+    <navbar></navbar>
 
-      <!-- 主体 -->
-      <div flex class="body">
-        <!-- 左侧元件菜单 -->
-        <toolbar :zoom="zoom"></toolbar>
+    <!-- 主体 -->
+    <div flex class="body">
+      <!-- 左侧元件菜单 -->
+      <toolbar :zoom="zoom"></toolbar>
 
-        <!-- 中央编辑区 -->
-        <div class="viewport">
-          <!-- 画布 -->
-          <viewport :zoom="zoom"></viewport>
+      <!-- 中部编辑区 -->
+      <div class="viewport">
+        <!-- 画布 -->
+        <viewport :zoom="zoom"></viewport>
 
-          <!-- 页面缩放 -->
-          <div class="zoom-wrap">
-            <slider v-model="zoom" :step="1" />
-            <div class="zoom-value">{{ zoom }}%</div>
-          </div>
+        <!-- 页面缩放 -->
+        <div class="zoom-wrap">
+          <slider @input="dozoom" :value="zoom" :step="1" :tuning="false" />
+          <div class="zoom-value">{{ zoom }}%</div>
         </div>
-
-        <!-- 右侧参数面板 -->
-        <panel></panel>
       </div>
+
+      <!-- 右侧参数面板 -->
+      <panel></panel>
     </div>
     
     <!-- 全局组件 | 上传图片 -->
@@ -36,39 +33,42 @@
 </template>
 
 <script>
-  import navbar from './components/Navbar'
-  import toolbar from './components/Toolbar'
-  import panel from './components/Panel'
-  import viewport from './components/Viewport'
+  import navbar from './components/navbar/navbar.vue'
+  import toolbar from './components/toolbar/toolbar.vue'
+  import panel from './components/panel/panel.vue'
+  import viewport from './components/viewport/viewport.vue'
 
   export default {
     components: {
-      navbar:     navbar,           // 顶部导航栏
-      toolbar:    toolbar,          // 左侧菜单栏
-      panel:      panel,            // 右侧参数面板
-      viewport:   viewport          // 编辑视区
+      navbar: navbar,             // 顶部导航栏
+      toolbar: toolbar,           // 左侧菜单栏
+      panel: panel,               // 右侧参数面板
+      viewport: viewport          // 页面画布
     },
-    data () {
-      return {
-        zoom: 64                    // 画布缩放
-      }
-    },
+
     mounted () {
       // 初始化选中元件（将页面作为初始选中元件）
       this.$store.commit('initActive')
+    },
+
+    methods: {
+      dozoom (val) {
+        this.$store.commit('zoom', val)
+      }
+    },
+
+    computed: {
+      zoom () {
+        return this.$store.state.h5.zoom
+      }
     }
   }
 </script>
 
 <style scoped>
-  .container {
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-  }
   .body {
-    height: 100%;
-    flex-grow: 1;
+    width: 100%;
+    height: calc(100% - 50px);
   }
   .viewport {
     height: 100%;
@@ -96,6 +96,15 @@
 </style>
 
 <style>
+  /* global variables */
+  :root {
+    --main: #2a2e45;
+    --main-light: rgba(42, 46, 69, .3);
+    --sub: #bf965c;
+    --sub-light: rgba(191, 150, 92, .3);
+  }
+
+  /* google material font */
   @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -116,17 +125,6 @@
     transition: all .2s;
     text-rendering: optimizeLegibility;
   }
-  i {
-    color: var(--main);
-  }
-
-  /* 全局变量 */
-  :root {
-    --main: #86A697;
-    --main-light: rgba(134, 166, 151, .3);
-    --sub: #B47157;
-    --sub-light: rgba(180, 113, 87, .3);
-  }
 
   [flex] {
     display: flex;
@@ -136,48 +134,11 @@
     position: relative;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background-color: var(--main-light);
+  .g-active {
+    outline: 1px solid var(--sub) !important;
   }
 
-  ::-webkit-input-placeholder {
-    color: #ccc;
-  }
-
-  .container-active {
-    outline: 1px solid var(--sub);
-  }
-  .container-active > .size-control,
-  .container-active > .move-bar {
-    display: block;
-  }
-  .size-control {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    bottom: -5px;
-    right: -5px;
-    border: 1px solid var(--sub);
-    cursor: nwse-resize;
-    display: none;
-    background-color: #fff;
-  }
-  .move-bar {
-    position: absolute;
-    width: calc(100% + 2px);
-    height: 6px;
-    cursor: move;
-    background-color: var(--sub);
-    left: -1px;
-    top: -6px;
-    display: none;
-  }
-
+  /* basic reset */
   * {
     margin: 0;
     padding: 0;
@@ -187,7 +148,6 @@
   body,
   .app {
     height: 100%;
-    overflow: hidden;
   }
   html {
     font-size: 28px;
@@ -196,6 +156,7 @@
     -webkit-font-smoothing: antialiased;
     text-size-adjust: 100%;
     font-size: 14px;
+    font-family: STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
   }
   a {
     color: inherit;
@@ -218,6 +179,7 @@
     border:  none;
     outline: none;
     background-color: transparent;
+    font-family: inherit;
   }
   input[type="color"] {
     cursor: pointer;
@@ -233,7 +195,18 @@
   select {
     appearance: none;
     outline: none;
-    cursor: pointer;
     border: none;
+    cursor: pointer;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #e9e9e9;
+  }
+  ::-webkit-input-placeholder {
+    color: #ccc;
   }
 </style>

@@ -1,54 +1,65 @@
 <template>
-  <div style="position: absolute; width: 0">
+  <div style="width: 0">
     <div style="display: none" id="generator">
 
-<div class="container" :style="{ paddingTop: height / 750 * 100 + '%' }">++  
+<div class="container" :style="{ paddingTop: height / 750 * 100 + '%' }">**
   <div class="wrapper">
-
-    +- hover 图片 -+
-    <template v-for="val in image">
-    <img v-if="val.hoverSrc"
-      :data-src="val.hoverSrc"
-      :width="val.width / 7.5 + '%'"
-      :style="{
-        position: 'absolute',
-        left: val.left / 7.5 + '%',
-        top: val.top / height * 100 + '%',
-        zIndex: val.z
-      }" />++
+    +- 背景图 -+
+    <template v-for="val in bgImage">
+    <img width="100%" :data-src="val.src">**
     </template>
     +- 图片 -+
-    <template v-for="val in image">
-    <!-- 带超链接的图 -->
-    <a v-if="val.href" 
-      :href="'javascript:' + val.href + ';'"
+    <div v-for="val in image"
       :style="{
-        display: 'block',
         position: 'absolute',
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
         left: val.left / 7.5 + '%',
         top: val.top / height * 100 + '%',
-        zIndex: val.z
       }">**
-      <img :data-hover="!!val.hoverPic"
+      <!-- hover 图片 -->
+      <img 
+        v-if="val.hoverPic"
+        width="100%"
+        :data-src="val.hoverSrc"
+        :style="{
+          position: 'absolute',
+          left: '0',
+          top: '0',
+          zIndex: val.z
+        }">**
+      <!-- 带超链接的图 -->
+      <a v-if="val.href" 
+        :href="val.href"
+        :style="{
+          display: 'block',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          zIndex: val.z
+        }">**
+        <img 
+          width="100%"
+          :data-hover="!!val.hoverPic"
+          :data-src="val.src"
+          :data-expire="val.expireSrc">**
+      </a>
+      <!-- 不带超链接的图 -->
+      <img v-else
+        width="100%"
+        :data-hover="!!val.hoverPic"
         :data-src="val.src"
         :data-expire="val.expireSrc"
-        width="100%">**
-    </a>
-    <!-- 不带超链接的图 -->
-    <img v-else
-      :data-hover="!!val.hoverPic"
-      :data-src="val.src"
-      :data-expire="val.expireSrc"
-      :width="val.width / 7.5 + '%'"
-      :style="{
-        position: 'absolute',
-        left: val.left / 7.5 + '%',
-        top: val.top / height * 100 + '%',
-        zIndex: val.z
-      }">++
-    </template>
+        :style="{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          zIndex: val.z
+        }">**
+    </div>
+
     +- 文本 -+
     <template v-for="val in text">
     <div v-html="val.text"
@@ -59,7 +70,8 @@
         left: val.left / 7.5 + '%',
         top: val.top / height * 100 + '%',
         lineHeight: val.lineHeight,
-        zIndex: val.z
+        zIndex: val.z,
+        fontSize: '1rem'
       }">
     </div>++
     </template>
@@ -74,6 +86,11 @@
         top: val.top / height * 100 + '%',
         zIndex: val.z,
         display: 'flex',
+        backgroundColor: val.bgColor,
+        borderStyle: 'solid',
+        borderRadius: val.radius + 'px',
+        borderColor: val.borderColor,
+        borderWidth: val.borderWidth + 'px',
         flexDirection: val.dir,
         justifyContent: val.justify,
         alignItems: val.align
@@ -142,11 +159,12 @@
           width: item.width / val.width * 100 + '%',
           height: item.height / val.height * 100 + '%',
           lineHeight: item.lineHeight,
-          zIndex: item.z
+          zIndex: item.z,
+          fontSize: '1rem'
         }">
       </div>**
       </template>
-    </div>++
+    </div>**
     </template>
     <template v-if="signup">
     +- 注册组件 -+
@@ -188,7 +206,7 @@
   import Stats from './stats.js'
   import Bridge from './bridge.js'
   import Style from './style.js'
-  import signup from '@/elements/signup/generator.vue'
+  import signup from '@/components/elements/signup/generator.vue'
 
   export default {
     data () {
@@ -196,6 +214,7 @@
         height: 0,
         title: '',
         endTime: '',
+        bgImage: [],
         image: [],
         text: [],
         container: [],
@@ -224,6 +243,7 @@
 
       // 获取并处理源数据
       getData () {
+        this.bgImage = this.$store.state.h5.bgImage;
         var image = this.$store.state.h5.image;
         var text = this.$store.state.h5.text;
         var page = this.$store.state.h5.page;
@@ -256,8 +276,8 @@
         });
 
         // 判断注册组件是否存在
-        if (signup.length > 0) {
-          this.signup = signup[0];
+        if (signup) {
+          this.signup = signup;
 
           // 将按钮图片设置为组件对象的属性
           this.signup.btn = image.filter(val => val.belong === 'signup')[0] || {};

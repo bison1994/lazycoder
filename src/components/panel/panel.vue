@@ -44,9 +44,10 @@
 
 <style scoped>
   .control-panel {
-    width: 360px;
+    width: 400px;
     height: 100%;
     border-left: 1px solid #f5f5f5;
+    user-select: none;
   }
   .tabs {
     border-bottom: 1px solid #f5f5f5;
@@ -69,9 +70,8 @@
     padding: 15px 20px;
   }
   .panel-row {
-    margin-bottom: 10px;
     font-size: 13px;
-    line-height: 32px;
+    line-height: 36px;
   }
   .panel-row i {
     font-size: 16px;
@@ -80,7 +80,7 @@
   .panel-label {
     display: inline-block;
     width: 80px;
-    height: 32px;
+    height: 36px;
     padding-left: 6px;
     color: #999;
   }
@@ -89,7 +89,7 @@
   }
   .panel-slider-wrap {
     flex-grow: 1;
-    padding-top: 3px;
+    padding-top: 6px;
     opacity: 0;
     transition: opacity .3s;
   }

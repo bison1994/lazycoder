@@ -1,0 +1,180 @@
+<template>
+  <div class="holder" id="viewport">
+    <div class="screen"
+      @dblclick="replaceImage"
+      :style="{
+        height: height + 'px', 
+        transform: 'scale(' + zoom / 100 + ')'
+      }">
+
+      <!-- 背景图 -->
+      <bg-pic
+        v-for="(val, i) in bgImage"
+        :key="i"
+        :val="val">
+      </bg-pic>
+
+      <!-- 图片 -->
+      <pic
+        v-for="(val, i) in image"
+        :key="i"
+        :val="val"
+        :height="height" 
+        :width="750">
+      </pic>
+
+      <!-- 文本 -->
+      <txt
+        v-for="(val, i) in text"
+        :key="i"
+        :id="id"
+        :val="val"
+        :height="height"
+        :width="750">
+      </txt>
+
+      <!-- 容器 -->
+      <container
+        v-for="(val, i) in container"
+        :key="i"
+        :id="id"
+        :val="val"
+        :i="i"
+        :height="height">
+      </container>
+
+      <!-- 注册组件 -->
+      <signup :height="height" :id="id"></signup>
+
+      <!-- 参考线 -->
+      <ref></ref>
+
+      <!-- 尺寸控制器 -->
+      <control></control>
+    </div>
+  </div>
+</template>
+
+<script>
+  import bgImage from '../elements/bgImage'
+  import pic from '../elements/pic'
+  import txt from '../elements/txt'
+  import container from '../elements/container'
+  import signup from '../elements/signup'
+  import ref from './ref-lines'
+  import control from './size-control'
+  import { move } from '@/mixins'
+
+  export default {
+    components: {
+      'bg-pic': bgImage,          // 背景图
+      pic: pic,                   // 图片
+      txt: txt,                   // 文本
+      container: container,       // 容器
+      signup: signup,             // 注册组件
+      ref: ref,                   // 参考线
+      control: control            // 尺寸控制
+    },
+
+    mixins: [move],
+
+    props: ['zoom'],
+
+    mounted () {
+      // 采用事件代理的方式监听元件的选中操作
+      document.getElementById('viewport').addEventListener('mousedown', this.handleSelection, false)
+    },
+
+    methods: {
+      handleSelection (e) {
+        var target = e.target;
+        var type = target.getAttribute('data-type');
+
+        if (type && type !== 'bgImage') {
+          var index = target.getAttribute('data-index');
+
+          // 设置选中元素
+          this.$store.commit('select', {
+            type: type,
+            index: parseInt(index)
+          })
+
+          // 绑定移动事件：只有从属于 page 的元件才能移动
+          var target = this.$store.state.h5.activeElement;
+          if (target.belong === 'page') {
+            this.initmovement(e);  // 参见 mixins
+          }
+        } else {
+          // 取消选中元素
+          this.$store.commit('select', {
+            type: 'page',
+            index: -1
+          })
+        }
+      },
+
+      // 替换图片
+      replaceImage (e) {
+        if (this.id.toLowerCase().indexOf('image') > -1) {
+          $communicator.$emit('upload', (payload) => {
+            this.$store.commit('replaceImage', payload)
+          })
+        }
+      }
+    },
+
+    computed: {
+      // 画布高度
+      height () {
+        return this.$store.state.h5.page.height
+      },
+
+      // 选中项id
+      id () {
+        var type = this.$store.state.h5.type;
+        var index = this.$store.state.h5.index;
+        index = typeof index === 'number' ? index : '';
+        return type + index;
+      },
+
+      // 图片
+      image () {
+        return this.$store.getters.image.filter(val => val.belong === 'page')
+      },
+
+      // 图片
+      bgImage () {
+        return this.$store.getters.bgImage
+      },
+
+      // 文本
+      text () {
+        return this.$store.getters.text.filter(val => val.belong === 'page')
+      },
+
+      // 容器
+      container () {
+        return this.$store.state.h5.container
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .holder {
+    height: 100%;
+    overflow: auto;
+    font-size: 0;
+  }
+  .screen {
+    width: 750px;
+    background-image:
+      linear-gradient(45deg, #f5f5f5 25%, transparent 0, transparent 75%, #f5f5f5 0),
+      linear-gradient(45deg, #f5f5f5 25%, transparent 0, transparent 75%, #f5f5f5 0);
+    background-position: 0 0, 15px 15px;
+    background-size: 30px 30px;
+    margin: 25px auto;
+    transform-origin: center top;
+    position: relative;
+  }
+</style>

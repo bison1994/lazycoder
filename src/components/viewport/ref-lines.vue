@@ -14,7 +14,6 @@
 
 <script>
 export default {
-  props: ['moving'],
   methods: {
     attachHoriz (value) {
       return this.horizontal.some(val => Math.abs(val - value) <= 1)
@@ -23,7 +22,11 @@ export default {
       return this.vertical.some(val => Math.abs(val - value) <= 1)
     }
   },
+
   computed: {
+    moving () {
+      return this.$store.state.h5.moving
+    },
     /**
      * 获取参考线
      *

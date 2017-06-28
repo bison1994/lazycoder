@@ -1,9 +1,8 @@
 <template>
-	<form 
+	<form
     v-if="data"
-		data-type="signup"
-    data-index="0"
-    :class="{'container-active': type == 'signup' && index == 0}"
+    data-type="signup"
+    :class="{'g-active': id === 'signup'}"
     :style="{
       position: 'absolute',
       width: data.width / 7.5 + '%',
@@ -12,25 +11,11 @@
       top: data.top / height * 100 + '%',
       zIndex: data.z
     }">
-
-		<!-- 移动控件 -->
-	  <div class="move-bar"
-	    data-type="signup"
-	    data-draggable="true"
-	    data-index="0">
-	  </div>
-
-	  <!-- 尺寸调节控件 -->
-    <div data-type="signup" 
-      data-index="0" 
-      class="size-control"
-      @mousedown="handleResize">
-    </div>
     
     <!-- 手机号 -->
     <div flex class="item">
       <div class="ipt-l">
-        <img :src="data.phoneIcon" height="24px" @click="uploadIcon('phoneIcon')">
+        <img :src="data.phoneIcon" height="24px" @mousedown.stop="uploadIcon('phoneIcon')">
       </div>
 			
 			<div class="ipt-m">
@@ -45,7 +30,7 @@
     <!-- 密码 -->
     <div flex class="item">
       <div class="ipt-l">
-        <img :src="data.passIcon" height="24px" @click="uploadIcon('passIcon')">
+        <img :src="data.passIcon" height="24px" @mousedown.stop="uploadIcon('passIcon')">
       </div>
 			
 			<div class="ipt-m">
@@ -60,7 +45,7 @@
     <!-- 图形验证码 -->
     <div flex id="valicode-li" class="item" v-show="data.toggleVali">
       <div class="ipt-l">
-        <img :src="data.graphIcon" height="24px" @click="uploadIcon('graphIcon')">
+        <img :src="data.graphIcon" height="24px" @mousedown.stop="uploadIcon('graphIcon')">
       </div>
 
       <div class="ipt-m">
@@ -71,7 +56,7 @@
     <!-- 短信验证码 -->
     <div flex class="item">
       <div class="ipt-l">
-        <img :src="data.valiIcon" height="24px" @click="uploadIcon('valiIcon')">
+        <img :src="data.valiIcon" height="24px" @mousedown.stop="uploadIcon('valiIcon')">
       </div>
 			
 			<div class="ipt-m">
@@ -86,7 +71,7 @@
     <!-- 邀请人 -->
     <div flex class="item" v-if="!data.hideInvite">
       <div class="ipt-l">
-        <img :src="data.inviteIcon" height="24px" @click="uploadIcon('inviteIcon')">
+        <img :src="data.inviteIcon" height="24px" @mousedown.stop="uploadIcon('inviteIcon')">
       </div>
       
       <div class="ipt-m">
@@ -95,20 +80,9 @@
     </div>
   
     <!-- 提交按钮 -->
-    <div
-      class="submit" 
-      :style="{
-        bottom: data.bottom + 'px'
-      }">
-      <span @click="addBtnPic" v-show="!btn.belong">+上传按钮图片</span>
-      <hover
-        :val="btn"
-        :width="data.width">
-      </hover>
-      <pic
-        :val="btn"
-        :width="data.width">
-      </pic>
+    <div class="submit" :style="{ bottom: data.bottom + 'px' }">
+      <span @mousedown.stop="addBtnPic" v-show="!btn.belong">+上传按钮图片</span>
+      <pic :val="btn" :width="data.width"></pic>
     </div>
     
     <p class="login" v-if="!data.hideSignIn">已有账号？直接登录</p>
@@ -116,21 +90,35 @@
 </template>
 
 <script>
-  import hover from '@/elements/hoverpic'
-  import pic from '@/elements/image'
+  import pic from '@/components/elements/pic'
+  import { move } from '@/mixins'
 
 	export default {
-		props: ['height', 'type', 'index'],
+		props: ['height', 'id'],
+
+    mixins: [move],
 
     components: {
-      pic: pic,
-      hover: hover
+      pic: pic
     },
 
 		methods: {
       // 调整大小
       handleResize (e) {
         this.$emit('resize', e)
+      },
+
+      // 选中元件
+      handleSelection (e) {
+        e.stopPropagation();
+
+        this.$store.commit('select', {
+          type: 'signup',
+          index: -1
+        })
+
+        // 绑定移动事件
+        this.initmovement(e);  // 参见 mixins
       },
 
       // 添加/替换注册按钮图片
@@ -154,7 +142,7 @@
 
 		computed: {
 			data () {
-				return this.$store.state.h5.signup[0]
+				return this.$store.state.h5.signup
 			},
 
       btn () {
@@ -228,8 +216,11 @@ input::-webkit-input-placeholder {
   left: 0;
   font-size: .8rem;
   height: 2rem;
-  text-align: center;
   cursor: pointer;
+  text-align: center;
+}
+.submit > div {
+  margin: 0 auto;
 }
 .submit img {
   left: 50% !important;
