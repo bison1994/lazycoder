@@ -67,7 +67,10 @@
 <!-- 面板区域公共样式 -->
 <style>
   .panel-wrap {
+    height: calc(100% - 50px);
     padding: 15px 20px;
+    position: relative;
+    overflow-y: auto;
   }
   .panel-row {
     font-size: 13px;
@@ -75,7 +78,9 @@
   }
   .panel-row i {
     font-size: 16px;
-    line-height: inherit;
+    line-height: 34px;
+    margin-top: 2px;
+    color: var(--main-light);
   }
   .panel-label {
     display: inline-block;
@@ -95,6 +100,9 @@
   }
   .panel-row:hover .panel-slider-wrap{
     opacity: 1;
+  }
+  .panel-cell {
+    flex-grow: 1;
   }
   .panel-wrap label {
     color: #ccc;
@@ -119,7 +127,8 @@
     border: none;
     border-top: 1px solid #f5f5f5;
   }
-  .panel-wrap select {
+  .panel-wrap select,
+  .panel-wrap input[type="text"] {
     width: 100%;
     height: 100%;
   }

@@ -2,7 +2,7 @@
   <div flex
     data-type="container"
     :data-index="i"
-    :class="{'g-active': 'container' + i === id}"
+    :class="[{'g-active': 'container' + i === id}, playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: 'absolute',
       width: val.width / 7.5 + '%',
@@ -51,7 +51,7 @@
   import txt from '@/components/elements/txt'
 
   export default {
-    props: ['height', 'val', 'i', 'id'],
+    props: ['height', 'val', 'i', 'id', 'playState'],
     
     components: {
     	pic: pic,

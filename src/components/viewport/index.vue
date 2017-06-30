@@ -18,9 +18,11 @@
       <pic
         v-for="(val, i) in image"
         :key="i"
+        :id="id"
         :val="val"
         :height="height" 
-        :width="750">
+        :width="750"
+        :playState="playState">
       </pic>
 
       <!-- 文本 -->
@@ -30,7 +32,8 @@
         :id="id"
         :val="val"
         :height="height"
-        :width="750">
+        :width="750"
+        :playState="playState">
       </txt>
 
       <!-- 容器 -->
@@ -40,7 +43,8 @@
         :id="id"
         :val="val"
         :i="i"
-        :height="height">
+        :height="height"
+        :playState="playState">
       </container>
 
       <!-- 注册组件 -->
@@ -90,7 +94,7 @@
         var target = e.target;
         var type = target.getAttribute('data-type');
 
-        if (type && type !== 'bgImage') {
+        if (type) {
           var index = target.getAttribute('data-index');
 
           // 设置选中元素
@@ -99,9 +103,9 @@
             index: parseInt(index)
           })
 
-          // 绑定移动事件：只有从属于 page 的元件才能移动
+          // 绑定移动事件：只有从属于 page 的，除背景图以外的元件才能移动
           var target = this.$store.state.h5.activeElement;
-          if (target.belong === 'page') {
+          if (target.belong === 'page' && type !== 'bgImage') {
             this.initmovement(e);  // 参见 mixins
           }
         } else {
@@ -155,6 +159,11 @@
       // 容器
       container () {
         return this.$store.state.h5.container
+      },
+
+      // 动画播放状态
+      playState () {
+        return this.$store.state.h5.playState
       }
     }
   }

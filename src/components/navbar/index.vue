@@ -80,14 +80,13 @@
   .logo {
     width: 50px;
     height: 50px;
-    background: url(../../assets/sleepycat.png) no-repeat center/100%;
+    background: url(../../assets/cat.png) no-repeat right bottom/90%;
   }
   .nav {
     width: 100%;
     height: 50px;
     flex-shrink: 0;
     background-color: var(--main);
-    padding-left: 10px;
   }
   .middle {
     flex-grow: 1;

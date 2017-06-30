@@ -6,7 +6,7 @@
     @mouseup.stop="syncFontParam"
     @blur="updateText(val.index)"
     :id="'text' + val.index"
-    :class="{'g-active': isCurrent}"
+    :class="[{'g-active': isCurrent}, playState ? 'anm-' + val.animationName : '']"
     :contenteditable="editable"
     :style="{
       position: val.belong === 'page' ? 'absolute' : 'relative',
@@ -24,7 +24,7 @@
   import { move } from '@/mixins'
   export default {
     // 属性含义参照 widget-image.vue
-    props: ['val', 'height', 'width', 'id'],
+    props: ['val', 'height', 'width', 'id', 'playState'],
 
     data () {
       return {

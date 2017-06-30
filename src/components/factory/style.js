@@ -1,4 +1,4 @@
-export default
+var baseCSS = 
 `
 <style>
   * {
@@ -86,7 +86,36 @@ export default
   [flex] {
     display: flex;
   }
+  [rel] {
+    position: relative;
+  }
+  [abs] {
+    position: absolute;
+  }
 
+  /* 图片组件 */
+  .lz-image img,
+  .lz-image a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .lz-image a {
+    display: 'block';
+  }
+
+  /* 文本组件 */
+  .lz-text {
+    font-size: 1rem;
+  }
+</style>
+`
+
+var signupCSS =
+`
+<style>
   /* 注册组件 */
   .sign-up-row {
     position: relative;
@@ -127,7 +156,7 @@ export default
   .sign-up-btn:active {
     opacity: 1;
   }
-  
+
   .sign-up-icon--close,
   .sign-up-icon--eye {
     display: block;
@@ -200,3 +229,5 @@ export default
   }
 </style>
 `
+
+export { baseCSS, signupCSS }

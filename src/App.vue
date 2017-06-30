@@ -33,10 +33,10 @@
 </template>
 
 <script>
-  import navbar from './components/navbar/navbar.vue'
-  import toolbar from './components/toolbar/toolbar.vue'
-  import panel from './components/panel/panel.vue'
-  import viewport from './components/viewport/viewport.vue'
+  import navbar from './components/navbar'
+  import toolbar from './components/toolbar'
+  import panel from './components/panel'
+  import viewport from './components/viewport'
 
   export default {
     components: {
@@ -69,6 +69,7 @@
   .body {
     width: 100%;
     height: calc(100% - 50px);
+    overflow: hidden;
   }
   .viewport {
     height: 100%;
@@ -90,7 +91,7 @@
   }
   .zoom-value {
     position: absolute;
-    top: 2px;
+    top: 4px;
     left: -36px;
   }
 </style>
@@ -98,10 +99,11 @@
 <style>
   /* global variables */
   :root {
-    --main: #2a2e45;
-    --main-light: rgba(42, 46, 69, .3);
-    --sub: #bf965c;
-    --sub-light: rgba(191, 150, 92, .3);
+    /*--main: #2a2e45;*/
+    --main: #1a237e;
+    --main-light: rgba(26, 35, 126, .3);
+    --sub: #ff5722;
+    --sub-light: rgba(255, 87, 34, .3);
   }
 
   /* google material font */
@@ -132,6 +134,10 @@
 
   [rel] {
     position: relative;
+  }
+
+  [abs] {
+    position: absolute;
   }
 
   .g-active {
@@ -197,6 +203,11 @@
     outline: none;
     border: none;
     cursor: pointer;
+    font-family: inherit;
+  }
+  textarea {
+    outline: none;
+    font-family: inherit;
   }
   ::-webkit-scrollbar {
     width: 6px;

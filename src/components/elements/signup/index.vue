@@ -96,8 +96,6 @@
 	export default {
 		props: ['height', 'id'],
 
-    mixins: [move],
-
     components: {
       pic: pic
     },
@@ -106,19 +104,6 @@
       // 调整大小
       handleResize (e) {
         this.$emit('resize', e)
-      },
-
-      // 选中元件
-      handleSelection (e) {
-        e.stopPropagation();
-
-        this.$store.commit('select', {
-          type: 'signup',
-          index: -1
-        })
-
-        // 绑定移动事件
-        this.initmovement(e);  // 参见 mixins
       },
 
       // 添加/替换注册按钮图片

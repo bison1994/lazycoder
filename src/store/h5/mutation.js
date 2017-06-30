@@ -5,7 +5,7 @@ export default {
     state.index = payload.index;
     var target = state[payload.type]
     if (Array.isArray(target)) {
-      state.activeElement = state[payload.type][payload.index]
+      state.activeElement = state[payload.type][payload.index];
     } else {
       state.activeElement = state[payload.type]
     }
@@ -181,7 +181,8 @@ export default {
       hoverSrc: '',                     // hover 图片实际的 url
       expirePic: '',                    // 结束状态 图片预览的 url（base64 或 线上路径）
       expireSrc: '',                    // 结束状态 图片实际的 url
-      belong: 'page'                    // 属于哪个容器
+      belong: 'page',                   // 属于哪个容器
+      animationName: ''
     }
 
     payload.forEach(function (val) {
@@ -219,7 +220,8 @@ export default {
       lineHeight: 1.6,
       text: '',
       href: '',
-      belong: 'page'
+      belong: 'page',
+      animationName: ''
     });
   },
 
@@ -248,7 +250,8 @@ export default {
       dir: 'row',
       justify: 'flex-start',
       align: 'flex-start',
-      belong: 'page'
+      belong: 'page',
+      animationName: ''
     });
   },
 
@@ -286,5 +289,42 @@ export default {
     var name = payload.name;
     sign[name] = payload.payload.url;
     sign[name + 'Src'] = payload.payload.src;
+  },
+
+  // 添加动画
+  addAnimation (state) {
+    state.animation.push({
+      name: '',
+      duration: 3,
+      delay: 0,
+      iteration: 1,
+      timing: 'linear',
+      direction: 'normal',
+      fill: 'none',
+      keyframes: [
+        {
+          stop: 0,
+          css: ''
+        }
+      ]
+    })
+  },
+
+  // 为动画添加 keyframe
+  addkeyframe (state, name) {
+    state.animation.map(val => {
+      if (val.name === name) {
+        val.keyframes.push({
+          stop: 0,
+          css: ''
+        });
+        return;
+      }
+    })
+  },
+
+  // 动画的播放与停止
+  setAnimation (state, status) {
+    state.playState = status;
   }
 }

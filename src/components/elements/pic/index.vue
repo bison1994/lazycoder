@@ -1,35 +1,20 @@
 <template>
-  <div
+  <div class="lz-image"
+    :class="[{'g-active': 'image' + val.index === id}, playState ? 'anm-' + val.animationName : '']"
     :style="{
       position: val.belong === 'page' ? 'absolute' : 'relative',
-      display: 'inline-block',
       width: val.width / width * 100 + '%',
+      height: val.height / height * 100 + '%',
       left: val.belong === 'page' ? val.left / width * 100 + '%' : '0',
-      top:  val.belong === 'page' ? val.top / height * 100 + '%' : '0',  
+      top: val.belong === 'page' ? val.top / height * 100 + '%' : '0',
+      zIndex: val.z
     }">
     <!-- hover 图 -->
-    <img 
-      v-if="val.hoverPic"
-      width="100%"
-      :src="val.hoverPic"
-      :style="{
-        position: 'absolute',
-        left: '0',
-        top: '0',
-        zIndex: val.z
-      }">
-    <img 
-      width="100%"
-      data-type="image"
+    <img v-if="val.hoverPic" :src="val.hoverPic">
+    <img data-type="image"
       :data-index="val.index"
       :data-hover="!!val.hoverPic"
-      :src="val.url"
-      :style="{
-        position: 'absolute',
-        left: '0',
-        top: '0',
-        zIndex: val.z
-      }">
+      :src="val.url">
   </div>
 </template>
 
@@ -38,7 +23,19 @@
 		props: [
 			'val', 				// 图片对象
 			'width', 			// 包含块的宽
-			'height'  		// 包含块的高
+			'height',  		// 包含块的高
+      'id',         // 选中项 id
+      'playState'   // 动画播放状态
 		]
 	}
 </script>
+
+<style scoped>
+  .lz-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

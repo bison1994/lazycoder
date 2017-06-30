@@ -9,83 +9,54 @@
     <img width="100%" :data-src="val.src">**
     </template>
     +- 图片 -+
-    <div v-for="val in image"
+    <template v-for="val in image">
+    <div abs class="lz-image"
       :style="{
-        position: 'absolute',
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
         left: val.left / 7.5 + '%',
         top: val.top / height * 100 + '%',
+        zIndex: val.z
       }">**
       <!-- hover 图片 -->
-      <img 
-        v-if="val.hoverPic"
-        width="100%"
-        :data-src="val.hoverSrc"
-        :style="{
-          position: 'absolute',
-          left: '0',
-          top: '0',
-          zIndex: val.z
-        }">**
+      <img v-if="val.hoverPic"
+        :data-src="val.hoverSrc">**
       <!-- 带超链接的图 -->
-      <a v-if="val.href" 
-        :href="val.href"
-        :style="{
-          display: 'block',
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          zIndex: val.z
-        }">**
-        <img 
-          width="100%"
-          :data-hover="!!val.hoverPic"
+      <a v-if="val.href" :href="val.href">**
+        <img :data-hover="!!val.hoverPic"
           :data-src="val.src"
           :data-expire="val.expireSrc">**
       </a>
       <!-- 不带超链接的图 -->
       <img v-else
-        width="100%"
         :data-hover="!!val.hoverPic"
         :data-src="val.src"
-        :data-expire="val.expireSrc"
-        :style="{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          zIndex: val.z
-        }">**
-    </div>
+        :data-expire="val.expireSrc">**
+    </div>++
+    </template>
 
     +- 文本 -+
     <template v-for="val in text">
-    <div v-html="val.text"
+    <div class="lz-text" abs v-html="val.text"
       :style="{
-        position: 'absolute',
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
         left: val.left / 7.5 + '%',
         top: val.top / height * 100 + '%',
         lineHeight: val.lineHeight,
-        zIndex: val.z,
-        fontSize: '1rem'
+        zIndex: val.z
       }">
     </div>++
     </template>
     +- 容器 -+
     <template v-for="val in container">
-    <div :data-name="val.name"
+    <div flex abs
       :style="{
-        position: 'absolute',
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
         left: val.left / 7.5 + '%',
         top: val.top / height * 100 + '%',
         zIndex: val.z,
-        display: 'flex',
         backgroundColor: val.bgColor,
         borderStyle: 'solid',
         borderRadius: val.radius + 'px',
@@ -97,70 +68,34 @@
       }">**
       <!-- 图片 -->
       <template v-for="item in val.image">
-      <div :style="{
+      <div rel class="lz-image" 
+        :style="{
           width: item.width / val.width * 100 + '%',
-          height: item.height / val.height * 100 + '%',
-          position: 'relative'
+          height: item.height / val.height * 100 + '%'
         }">**
         <!-- hover 图片 -->
-        <template>
-        <img v-if="item.hoverSrc"
-          width="100%"
-          height="100%"
-          :data-src="item.hoverSrc"
-          :style="{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            zIndex: item.z
-          }" />++
-        </template>
+        <img v-if="item.hoverSrc" :data-src="item.hoverSrc">++
         <!-- 带超链接的图 -->
-        <template v-if="item.href">
-        <a :href="item.href"
-          style="{
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-          }"
-          :style="{
-            zIndex: item.z
-          }">++
+        <a v-if="item.href" :href="item.href">**
           <img :data-hover="!!item.hoverPic"
             :data-src="item.src"
-            :data-expire="item.expireSrc"
-            width="100%"
-            height="100%" />++
-        </a>++
-        </template>
+            :data-expire="item.expireSrc">**
+        </a>
         <!-- 不带超链接的图 -->
-        <template v-else>
-        <img :data-hover="!!item.hoverPic"
+        <img v-else :data-hover="!!item.hoverPic"
           :data-src="item.src"
-          :data-expire="item.expireSrc"
-          width="100%"
-          height="100%"
-          :style="{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            zIndex: item.z
-          }" />**
-        </template>
+          :data-expire="item.expireSrc">**
       </div>++
       </template>
       <!-- 文本 -->
       <template v-for="item in val.text">
       <div v-html="item.text"
+        class="lz-text"
         :style="{
           width: item.width / val.width * 100 + '%',
           height: item.height / val.height * 100 + '%',
           lineHeight: item.lineHeight,
-          zIndex: item.z,
-          fontSize: '1rem'
+          zIndex: item.z
         }">
       </div>**
       </template>
@@ -176,19 +111,11 @@
     </div><!-- end of generator -->
 
     <!-- 选择生成哪些代码 -->
-    <popbox ref="popbox" title="选择需要复制的代码" @confirm="generate">
+    <popbox ref="popbox" title="是否需要以下模块" @confirm="build">
       <div>
-        <label>
-          <input type="checkbox" name="which" value="head" v-model="contain">
-          Head　
-        </label>
         <label>
           <input type="checkbox" name="which" value="bridge" v-model="contain">
           JS Bridge　
-        </label>
-        <label>
-          <input type="checkbox" name="which" value="body" v-model="contain">
-          Body　
         </label>
         <label>
           <input type="checkbox" name="which" value="stats" v-model="contain">
@@ -205,8 +132,8 @@
 <script>
   import Stats from './stats.js'
   import Bridge from './bridge.js'
-  import Style from './style.js'
-  import signup from '@/components/elements/signup/generator.vue'
+  import { baseCSS, signupCSS } from './style.js'
+  import signup from '@/components/elements/signup/build.vue'
 
   export default {
     data () {
@@ -219,7 +146,7 @@
         text: [],
         container: [],
         signup: null,
-        contain: ['head', 'bridge', 'body', 'stats']
+        contain: ['bridge', 'stats']
       }
     },
 
@@ -232,8 +159,7 @@
         this.$refs.popbox.show = true;
       },
 
-      // 点击确定，生成代码
-      generate () {
+      build () {
         this.getData();
 
         setTimeout(() => {
@@ -243,21 +169,19 @@
 
       // 获取并处理源数据
       getData () {
-        this.bgImage = this.$store.state.h5.bgImage;
         var image = this.$store.state.h5.image;
         var text = this.$store.state.h5.text;
-        var page = this.$store.state.h5.page;
         var signup = this.$store.state.h5.signup;
-
+        var page = this.$store.state.h5.page;
+        this.image = image.filter(val => val.belong === 'page');
+        this.text = text.filter(val => val.belong === 'page');
+        this.bgImage = this.$store.state.h5.bgImage;
+        this.container = this.$store.state.h5.container;
         this.title = page.title;
         this.height = page.height;
         this.endTime = page.endTime;
 
-        this.image = image.filter(val => val.belong === 'page');
-        this.text = text.filter(val => val.belong === 'page');
-        this.container = this.$store.state.h5.container;
-
-        // 将属于容器的图片和文本数据添加到容器对象中
+        // 将属于容器的图片和文本添加到容器对象中
         this.container.forEach(val => {
           val.image = [];
           val.text = [];
@@ -279,8 +203,9 @@
         if (signup) {
           this.signup = signup;
 
-          // 将按钮图片设置为组件对象的属性
-          this.signup.btn = image.filter(val => val.belong === 'signup')[0] || {};
+          // 将按钮图片添加到注册组件对象
+          var arr = image.filter(val => val.belong === 'signup');
+          this.signup.btn = arr[0] || {};
         }
       },
 
@@ -288,7 +213,7 @@
       joinData () {
         var title = this.title;
         var time = (new Date(this.endTime)).getTime();
-        var head = this.contain.indexOf('head') > -1 ? 
+        var head = 
 `<!DOCTYPE html>
 <html>
 <head>
@@ -297,17 +222,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 </head>
 `
-+ Style +
++ baseCSS
++ (this.signup ? signupCSS : '')
++
 `
 <body>
 `
-: '';
-
         var bridge = this.contain.indexOf('bridge') > -1 ? Bridge : '';
 
-        var body = this.contain.indexOf('body') > -1  
-          ? this.formatCode(document.getElementById('generator').innerHTML)
-          : '';
+        var body = this.formatCode(document.getElementById('generator').innerHTML);
 
         var signup = !this.signup 
         ? ''
@@ -347,14 +270,12 @@
 
 \<\/script\>
 `
-
+        // 统计代码
         var stats = this.contain.indexOf('stats') > -1 ? Stats : '';
 
-        var tail = this.contain.indexOf('head') > -1 && this.contain.indexOf('body') > -1 ?
+        var tail = 
 `</body>
 </html>`
-:
-'';
 
         var output = head + bridge + body + js + stats + tail;
 

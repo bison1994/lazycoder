@@ -105,7 +105,7 @@
     width: 50px;
     height: 100%;
     border-right: 1px solid #eee;
-    color: #555;
+    color: var(--main);
     padding-top: 10px;
   }
   .menu-item {
