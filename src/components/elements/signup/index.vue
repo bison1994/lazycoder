@@ -91,8 +91,6 @@
 
 <script>
   import pic from '@/components/elements/pic'
-  import { move } from '@/mixins'
-
 	export default {
 		props: ['height', 'id'],
 
@@ -101,11 +99,6 @@
     },
 
 		methods: {
-      // 调整大小
-      handleResize (e) {
-        this.$emit('resize', e)
-      },
-
       // 添加/替换注册按钮图片
       addBtnPic () {
         $communicator.$emit('upload', (payload) => {
@@ -132,11 +125,7 @@
 
       btn () {
         var b = this.$store.state.h5.image.filter(val => val.belong === 'signup');
-        if (b.length > 0) {
-          return b[0]
-        } else {
-          return {}
-        }
+        return b.length > 0 ? b[0] : {}
       }
 		}
 	}

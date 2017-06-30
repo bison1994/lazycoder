@@ -86,8 +86,7 @@
 
         // 设置选中
         this.$store.commit('select', {
-          type: 'signup',
-          index: 0
+          type: 'signup'
         });
       },
 

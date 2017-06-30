@@ -104,7 +104,7 @@
             <slider :step="1" v-model="val.stop" />
           </div>
         </div>
-        <textarea placeholder="css code" v-model="val.css"></textarea>
+        <textarea placeholder="IMPORTANT: use rem, not px" v-model="val.css"></textarea>
         <i 
           class="material-icons addframe" 
           v-if="i + 1 === currentAnimation.keyframes.length"

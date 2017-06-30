@@ -11,6 +11,7 @@
     +- 图片 -+
     <template v-for="val in image">
     <div abs class="lz-image"
+      :class="[val.animationName ? 'anm-' + val.animationName : '']"
       :style="{
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
@@ -19,8 +20,9 @@
         zIndex: val.z
       }">**
       <!-- hover 图片 -->
-      <img v-if="val.hoverPic"
-        :data-src="val.hoverSrc">**
+      <template v-if="val.hoverPic">
+      <img :data-src="val.hoverSrc">**
+      </template>
       <!-- 带超链接的图 -->
       <a v-if="val.href" :href="val.href">**
         <img :data-hover="!!val.hoverPic"
@@ -34,10 +36,10 @@
         :data-expire="val.expireSrc">**
     </div>++
     </template>
-
     +- 文本 -+
     <template v-for="val in text">
     <div class="lz-text" abs v-html="val.text"
+      :class="[val.animationName ? 'anm-' + val.animationName : '']"
       :style="{
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
@@ -51,6 +53,7 @@
     +- 容器 -+
     <template v-for="val in container">
     <div flex abs
+      :class="[val.animationName ? 'anm-' + val.animationName : '']"
       :style="{
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
@@ -68,13 +71,13 @@
       }">**
       <!-- 图片 -->
       <template v-for="item in val.image">
-      <div rel class="lz-image" 
+      <div rel class="lz-image"
+        :class="[item.animationName ? 'anm-' + item.animationName : '']"
         :style="{
           width: item.width / val.width * 100 + '%',
           height: item.height / val.height * 100 + '%'
         }">**
-        <!-- hover 图片 -->
-        <img v-if="item.hoverSrc" :data-src="item.hoverSrc">++
+        <img v-if="item.hoverSrc" :data-src="item.hoverSrc">**
         <!-- 带超链接的图 -->
         <a v-if="item.href" :href="item.href">**
           <img :data-hover="!!item.hoverPic"
@@ -90,6 +93,7 @@
       <!-- 文本 -->
       <template v-for="item in val.text">
       <div v-html="item.text"
+        :class="[item.animationName ? 'anm-' + item.animationName : '']"
         class="lz-text"
         :style="{
           width: item.width / val.width * 100 + '%',
@@ -105,8 +109,7 @@
     +- 注册组件 -+
     <signup :data="signup" :height="height"></signup>
     </template>
-
-</div>++</div>
+</div>**</div>
 
     </div><!-- end of generator -->
 
@@ -133,6 +136,7 @@
   import Stats from './stats.js'
   import Bridge from './bridge.js'
   import { baseCSS, signupCSS } from './style.js'
+  import { getAnimateCss } from '@/utils/css-generate.js'
   import signup from '@/components/elements/signup/build.vue'
 
   export default {
@@ -146,7 +150,8 @@
         text: [],
         container: [],
         signup: null,
-        contain: ['bridge', 'stats']
+        contain: ['bridge', 'stats'],
+        animation: []
       }
     },
 
@@ -173,6 +178,7 @@
         var text = this.$store.state.h5.text;
         var signup = this.$store.state.h5.signup;
         var page = this.$store.state.h5.page;
+        this.animation = this.$store.state.h5.animation;
         this.image = image.filter(val => val.belong === 'page');
         this.text = text.filter(val => val.belong === 'page');
         this.bgImage = this.$store.state.h5.bgImage;
@@ -213,6 +219,15 @@
       joinData () {
         var title = this.title;
         var time = (new Date(this.endTime)).getTime();
+
+        // 生成动画 CSS
+        var animate = '';
+        if (this.animation.length > 0) {
+          this.animation.map(val => {
+            animate += ('<style>' + getAnimateCss(val.name, val, val.keyframes) + '</style>') 
+          })
+        }
+
         var head = 
 `<!DOCTYPE html>
 <html>
@@ -224,6 +239,7 @@
 `
 + baseCSS
 + (this.signup ? signupCSS : '')
++ animate
 +
 `
 <body>
@@ -242,7 +258,6 @@
 <script>
   new itz.wap.register({})
 \<\/script\>
-
 `
         var js = signup +
 `
@@ -267,7 +282,6 @@
       imgs[i].src = imgs[i].getAttribute('data-src');
     }
   }
-
 \<\/script\>
 `
         // 统计代码
@@ -285,6 +299,10 @@
 
       // 代码格式化
       formatCode (str) {
+        // 去除某些符号
+        str = str.replace(/\=\"\"/g, '');
+        str = str.replace(/\<\!\-\-\-\-\>/g, '');
+
         // 为注释添加叹号
         str = str.replace(/\+\-/g, '<!--');
         str = str.replace(/\-\+/g, '-->');

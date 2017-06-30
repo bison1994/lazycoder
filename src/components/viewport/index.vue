@@ -100,7 +100,7 @@
           // 设置选中元素
           this.$store.commit('select', {
             type: type,
-            index: parseInt(index)
+            index: index ? parseInt(index) : -1
           })
 
           // 绑定移动事件：只有从属于 page 的，除背景图以外的元件才能移动
@@ -137,7 +137,7 @@
       id () {
         var type = this.$store.state.h5.type;
         var index = this.$store.state.h5.index;
-        index = typeof index === 'number' ? index : '';
+        index = index > 0 ? index : '';
         return type + index;
       },
 
@@ -180,8 +180,8 @@
     background-image:
       linear-gradient(45deg, #f5f5f5 25%, transparent 0, transparent 75%, #f5f5f5 0),
       linear-gradient(45deg, #f5f5f5 25%, transparent 0, transparent 75%, #f5f5f5 0);
-    background-position: 0 0, 15px 15px;
-    background-size: 30px 30px;
+    background-position: 0 0, 16px 16px;
+    background-size: 32px 32px;
     margin: 25px auto;
     transform-origin: center top;
     position: relative;

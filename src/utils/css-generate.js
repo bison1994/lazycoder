@@ -8,7 +8,6 @@
  *
  * @return { String }
  */
-
 export function getAnimateCss (name, animation, stops, needFormat = true) {
   var properties = ['duration', 'timing', 'delay', 'iteration', 'direction', 'fill'];
   var values = [name];
@@ -30,8 +29,8 @@ export function getAnimateCss (name, animation, stops, needFormat = true) {
   var keyframes = [];
   if (needFormat) {
     stops.map(val => {
-      keyframes.push('\0\0' + val.stop + '% {\n');
-      keyframes.push('\0\0\0\0' + val.css + '\n\0\0}\n');
+      keyframes.push('\t' + val.stop + '% {\n');
+      keyframes.push('\t\t' + val.css + '\n\t}\n');
     })
   } else {
     stops.map(val => {
