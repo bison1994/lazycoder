@@ -132,4 +132,10 @@
     width: 100%;
     height: 100%;
   }
+  .panel-preview {
+    width: 50px;
+    height: 32px;
+    background: no-repeat center/100%;
+    cursor: pointer;
+  }
 </style>

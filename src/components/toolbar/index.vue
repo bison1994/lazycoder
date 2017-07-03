@@ -106,6 +106,7 @@
     border-right: 1px solid #eee;
     color: var(--main);
     padding-top: 10px;
+    user-select: none;
   }
   .menu-item {
     display: inline-block;

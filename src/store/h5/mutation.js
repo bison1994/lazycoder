@@ -243,7 +243,10 @@ export default {
       left: 50,
       top: state.top,
       z: 0,
+      display: 'flex',
       bgColor: '',
+      backPic: '',
+      backPicUrl: '',
       radius: 0,
       borderColor: '',
       borderWidth: 0,
@@ -253,6 +256,14 @@ export default {
       belong: 'page',
       animationName: ''
     });
+  },
+
+  // 添加容器背景图
+  addContainerBackPic (state, payload) {
+    state.activeElement.backPic = payload[0].url;
+    state.activeElement.backPicUrl = payload[0].src;
+    state.activeElement.width = payload[0].width;
+    state.activeElement.height = payload[0].height;
   },
 
   // 添加注册组件

@@ -1,9 +1,11 @@
 <template>
-  <div flex
+  <div
+    class="lz-container"
     data-type="container"
     :data-index="i"
     :class="[{'g-active': 'container' + i === id}, playState ? 'anm-' + val.animationName : '']"
     :style="{
+      display: val.display,
       position: 'absolute',
       width: val.width / 7.5 + '%',
       height: val.height / height * 100 + '%',
@@ -11,6 +13,7 @@
       top: val.top / height * 100 + '%',
       zIndex: val.z,
       backgroundColor: val.bgColor,
+      backgroundImage: 'url(' + val.backPic + ')',
       borderStyle: 'solid',
       borderRadius: val.radius + 'px',
       borderColor: val.borderColor,
@@ -20,28 +23,26 @@
       alignItems: val.align
     }">
 
-    <!-- 图片 -->
-    <div v-for="img in image"
-      :style="{
-        width: img.width / val.width * 100 + '%',
-        height: img.height / val.height * 100 + '%',
-        position: 'relative'
-      }">
-			
-			<!-- 图片 -->
-      <pic :val="img"
-        :height="img.height" 
-        :width="img.width">
-      </pic>
-    </div>
+		<!-- 图片 -->
+    <pic 
+      v-for="(img, index) in image"
+      :key="index"
+      :id="id"
+      :val="img"
+      :height="val.height" 
+      :width="val.width"
+      :playState="playState">
+    </pic>
 
     <!-- 文本 -->
-    <txt v-for="(txt, index) in text"
+    <txt 
+      v-for="(txt, index) in text"
       :key="index"
       :id="id"
       :val="txt"
       :height="val.height" 
-      :width="val.width">
+      :width="val.width"
+      :playState="playState">
     </txt>
   </div>
 </template>
@@ -70,3 +71,11 @@
     }
   }
 </script>
+
+<style scoped>
+  .lz-container {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
+</style>

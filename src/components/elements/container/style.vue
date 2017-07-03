@@ -10,6 +10,17 @@
     </div>
 
     <div class="panel-row" flex>
+      <i class="material-icons">web_asset</i>
+      <div class="panel-label">display</div>
+      <div>
+        <select v-model="activeElement.display">
+          <option>flex</option>
+          <option>block</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel-row" flex v-show="activeElement.display === 'flex'">
       <i class="material-icons">shuffle</i>
       <div class="panel-label">主轴方向</div>
       <div>
@@ -22,7 +33,7 @@
       </div>
     </div>
 
-    <div class="panel-row" flex>
+    <div class="panel-row" flex v-show="activeElement.display === 'flex'">
       <i class="material-icons">filter_list</i>
       <div class="panel-label">主轴分布</div>
       <div>
@@ -36,7 +47,7 @@
       </div>
     </div>
 
-    <div class="panel-row" flex>
+    <div class="panel-row" flex v-show="activeElement.display === 'flex'">
       <i class="material-icons">graphic_eq</i>
       <div class="panel-label">侧轴分布</div>
       <div>
@@ -55,6 +66,18 @@
       <div class="panel-value">{{ activeElement.bgColor }}</div>
       <div>
         <input type="color" v-model="activeElement.bgColor">
+      </div>
+    </div>
+
+    <div class="panel-row" flex>
+      <i class="material-icons">wallpaper</i>
+      <div class="panel-label">背景图</div>
+      <div class="panel-cell">
+        <div class="panel-preview"
+          @click="addPic"
+          :style="{ backgroundImage: 'url(' + activeElement.backPic + ')' }">
+          <i class="material-icons" v-show="!activeElement.backPic">add</i>
+        </div>
       </div>
     </div>
 
@@ -87,6 +110,13 @@
 
 <script>
 	export default {
-		props: ['activeElement']
+		props: ['activeElement'],
+    methods: {
+      addPic () {
+        $communicator.$emit('upload', (payload) => {
+          this.$store.commit('addContainerBackPic', payload)
+        })
+      }
+    }
 	}
 </script>

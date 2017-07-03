@@ -86,7 +86,36 @@
 
     mounted () {
       // 采用事件代理的方式监听元件的选中操作
-      document.getElementById('viewport').addEventListener('mousedown', this.handleSelection, false)
+      document.getElementById('viewport').addEventListener('mousedown', this.handleSelection, false);
+
+      // 绑定键盘上下左右键用于元件的移动
+      document.addEventListener('keydown', (e) => {
+        e.stopPropagation();
+        var target = this.$store.state.h5.activeElement;
+
+        // 左
+        if (e.keyCode === 37 && target.left) {
+          target.left -= 1;
+          return
+        }
+        // 上
+        if (e.keyCode === 38 && target.top) {
+          e.preventDefault();
+          target.top -= 1;
+          return
+        }
+        // 右
+        if (e.keyCode === 39 && target.left) {
+          target.left += 1;
+          return
+        }
+
+        // 下
+        if (e.keyCode === 40 && target.top) {
+          e.preventDefault();
+          target.top += 1;
+        }
+      }, true)
     },
 
     methods: {
@@ -137,7 +166,7 @@
       id () {
         var type = this.$store.state.h5.type;
         var index = this.$store.state.h5.index;
-        index = index > 0 ? index : '';
+        index = index >= 0 ? index : '';
         return type + index;
       },
 

@@ -58,7 +58,8 @@ var baseCSS =
     left: 0;
     position: absolute;
   }
-  [data-hover="true"]:active {
+  [data-hover="true"]:active,
+  [data-hover="true"]:focus {
     opacity: 0;
   }
   font[size="1"] {
@@ -108,6 +109,15 @@ var baseCSS =
   /* 文本组件 */
   .lz-text {
     font-size: 1rem;
+  }
+
+  /* 容器组件 */
+  .lz-container {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    border-style: solid;
+    position: absolute;
   }
 </style>
 `

@@ -51,23 +51,15 @@
     </div>++
     </template>
     +- 容器 -+
-    <template v-for="val in container">
-    <div flex abs
-      :class="[val.animationName ? 'anm-' + val.animationName : '']"
+    <template v-for="(val, i) in container">
+    <div class="lz-container"
+      :class="[val.animationName ? 'anm-' + val.animationName : '', 'lz-container-' + i]"
       :style="{
         width: val.width / 7.5 + '%',
         height: val.height / height * 100 + '%',
         left: val.left / 7.5 + '%',
         top: val.top / height * 100 + '%',
-        zIndex: val.z,
-        backgroundColor: val.bgColor,
-        borderStyle: 'solid',
-        borderRadius: val.radius + 'px',
-        borderColor: val.borderColor,
-        borderWidth: val.borderWidth + 'px',
-        flexDirection: val.dir,
-        justifyContent: val.justify,
-        alignItems: val.align
+        zIndex: val.z
       }">**
       <!-- 图片 -->
       <template v-for="item in val.image">
@@ -221,12 +213,10 @@
         var time = (new Date(this.endTime)).getTime();
 
         // 生成动画 CSS
-        var animate = '';
-        if (this.animation.length > 0) {
-          this.animation.map(val => {
-            animate += ('<style>' + getAnimateCss(val.name, val, val.keyframes) + '</style>') 
-          })
-        }
+        var animateCss = this.buildAnimateCss();
+
+        // 生成 container css
+        var containerCss = this.buildContainerCss();
 
         var head = 
 `<!DOCTYPE html>
@@ -239,7 +229,8 @@
 `
 + baseCSS
 + (this.signup ? signupCSS : '')
-+ animate
++ animateCss
++ containerCss
 +
 `
 <body>
@@ -253,7 +244,7 @@
         :
 `
 <script src="https://js1-itzcdn-com.alikunlun.com/static_res/js/third/jquery-1.9.1.js">\<\/script\>
-<script>window.itz = {};window.itz.wap={}\<\/script\>
+<script>window.itz = window.itz || {}; window.itz.wap = window.itz.wap || {}\<\/script\>
 <script src="https://js1-itzcdn-com.alikunlun.com/static/wap/js/newreg.min.js">\<\/script\>
 <script>
   new itz.wap.register({})
@@ -339,6 +330,59 @@
         } catch (e) {
           alert(e)
         }
+      },
+
+      // 生成动画的 css 代码字符串
+      buildAnimateCss () {
+        if (this.animation.length === 0) return '';
+        var css = '<style>';
+        this.animation.map(val => {
+          css += getAnimateCss(val.name, val, val.keyframes)
+        })
+        return css + '</style>'
+      },
+
+      // 生成 container css 代码字符串
+      buildContainerCss () {
+        if (this.container.length === 0) return '';
+
+        var css = '\r<style>\r';
+        var i = 0;
+        var ref = {
+          display: '\r\t\tdisplay: ',
+          bgColor: ';\r\t\tbackground-color: ',
+          backPicUrl: ';\r\t\tbackground-image: ',
+          radius: ';\r\t\tborder-radius: ',
+          borderColor: ';\r\t\tborder-color: ',
+          borderWidth: ';\r\t\tborder-width: ',
+          dir: ';\r\t\tflex-direction: ',
+          justify: ';\r\t\tjustify-content: ',
+          align: ';\r\t\talign-items: ',
+          animationName: ';\r\t\tanimation-name: '
+        }
+
+        this.container.map(obj => {
+          css += '\t.lz-container-' + i + ' {';
+          for (var key in ref) {
+            if (!obj[key] || obj[key] === 'row' || obj[key] === 'flex-start') continue;
+
+            if (key === 'backPicUrl') {
+              css += (ref[key] + 'url(' + obj[key] + ')');
+              continue;
+            }
+
+            if (key === 'radius' || key === 'borderWidth') {
+              css += (ref[key] + obj[key] + 'px');
+              continue;
+            }
+            css += (ref[key] + obj[key]);
+          }
+
+          css += ';\r\t}\r';
+          i += 1;
+        });
+
+        return css + '</style>'
       }
     }
   }
